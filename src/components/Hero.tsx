@@ -23,6 +23,8 @@ const CITIES: City[] = [
   { name: 'Singapore',lat:  1.3,  lon: 103.8, labelDx:  7, labelDy:  4 },
   { name: 'Tokyo',    lat: 35.7,  lon: 139.7, labelDx:  7, labelDy: -4 },
   { name: 'Seoul',    lat: 37.6,  lon: 127.0, labelDx:  7, labelDy: -4 },
+  { name: 'Bắc Kinh', lat: 39.9, lon: 116.4, labelDx:  7, labelDy: -4 },
+  { name: 'Thượng Hải', lat: 31.2, lon: 121.5, labelDx:  7, labelDy:  4 },
   { name: 'Sydney',   lat:-33.9,  lon: 151.2, labelDx:  7, labelDy:  4 },
   { name: 'Dubai',    lat: 25.2,  lon:  55.3, labelDx:  7, labelDy: -4 },
   { name: 'London',   lat: 51.5,  lon:   0.1, labelDx:  7, labelDy: -4 },
@@ -45,6 +47,11 @@ const CONNECTIONS: [string, string][] = [
   ['New York', 'Tokyo'],
   ['Singapore', 'Sydney'],
   ['Tokyo', 'Seoul'],
+  ['Bắc Kinh', 'Seoul'],
+  ['Bắc Kinh', 'Thượng Hải'],
+  ['Thượng Hải', 'Tokyo'],
+  ['Hà Nội', 'Bắc Kinh'],
+  ['Thượng Hải', 'Singapore'],
 ];
 
 type Projected = {
