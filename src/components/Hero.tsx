@@ -16,42 +16,85 @@ type City = {
 };
 
 const CITIES: City[] = [
-  { name: 'Hà Nội',    lat: 21.0,  lon: 105.8, primary: true,  labelDx:  8, labelDy: -6 },
-  { name: 'Đà Nẵng',  lat: 16.0,  lon: 108.2, primary: true,  labelDx:  8, labelDy:  4 },
-  { name: 'TP.HCM',   lat: 10.8,  lon: 106.7, primary: true,  labelDx:  8, labelDy:  4 },
-  { name: 'Bangkok',  lat: 13.8,  lon: 100.5, labelDx:  7, labelDy: -4 },
-  { name: 'Singapore',lat:  1.3,  lon: 103.8, labelDx:  7, labelDy:  4 },
-  { name: 'Tokyo',    lat: 35.7,  lon: 139.7, labelDx:  7, labelDy: -4 },
-  { name: 'Seoul',    lat: 37.6,  lon: 127.0, labelDx:  7, labelDy: -4 },
-  { name: 'Bắc Kinh', lat: 39.9, lon: 116.4, labelDx:  7, labelDy: -4 },
-  { name: 'Thượng Hải', lat: 31.2, lon: 121.5, labelDx:  7, labelDy:  4 },
-  { name: 'Sydney',   lat:-33.9,  lon: 151.2, labelDx:  7, labelDy:  4 },
-  { name: 'Dubai',    lat: 25.2,  lon:  55.3, labelDx:  7, labelDy: -4 },
-  { name: 'London',   lat: 51.5,  lon:   0.1, labelDx:  7, labelDy: -4 },
-  { name: 'New York', lat: 40.7,  lon: -74.0, labelDx:  7, labelDy: -4 },
+  // Việt Nam
+  { name: 'Hà Nội',      lat: 21.0,  lon: 105.8, primary: true, labelDx:  8, labelDy: -6 },
+  { name: 'Đà Nẵng',    lat: 16.0,  lon: 108.2, primary: true, labelDx:  8, labelDy:  4 },
+  { name: 'TP.HCM',     lat: 10.8,  lon: 106.7, primary: true, labelDx:  8, labelDy:  4 },
+  // Đông Nam Á
+  { name: 'Bangkok',    lat: 13.8,  lon: 100.5, labelDx:  7, labelDy: -4 },
+  { name: 'Singapore',  lat:  1.3,  lon: 103.8, labelDx:  7, labelDy:  4 },
+  { name: 'Kuala Lumpur', lat: 3.1, lon: 101.7, labelDx:  7, labelDy: -4 },
+  { name: 'Bali',       lat: -8.7,  lon: 115.2, labelDx:  7, labelDy:  4 },
+  { name: 'Manila',     lat: 14.6,  lon: 121.0, labelDx:  7, labelDy: -4 },
+  // Đông Bắc Á
+  { name: 'Hồng Kông',  lat: 22.3,  lon: 114.2, labelDx:  7, labelDy: -4 },
+  { name: 'Đài Bắc',   lat: 25.0,  lon: 121.5, labelDx:  7, labelDy: -4 },
+  { name: 'Thượng Hải', lat: 31.2,  lon: 121.5, labelDx:  7, labelDy:  4 },
+  { name: 'Bắc Kinh',  lat: 39.9,  lon: 116.4, labelDx:  7, labelDy: -4 },
+  { name: 'Seoul',      lat: 37.6,  lon: 127.0, labelDx:  7, labelDy: -4 },
+  { name: 'Osaka',      lat: 34.7,  lon: 135.5, labelDx:  7, labelDy:  4 },
+  { name: 'Tokyo',      lat: 35.7,  lon: 139.7, labelDx:  7, labelDy: -4 },
+  // Châu Đại Dương
+  { name: 'Sydney',     lat:-33.9,  lon: 151.2, labelDx:  7, labelDy:  4 },
+  // Trung Đông
+  { name: 'Dubai',      lat: 25.2,  lon:  55.3, labelDx:  7, labelDy: -4 },
+  { name: 'Doha',       lat: 25.3,  lon:  51.5, labelDx:  7, labelDy:  4 },
+  // Châu Âu
+  { name: 'Istanbul',   lat: 41.0,  lon:  29.0, labelDx:  7, labelDy: -4 },
+  { name: 'London',     lat: 51.5,  lon:   0.1, labelDx:  7, labelDy: -4 },
+  { name: 'Paris',      lat: 48.9,  lon:   2.3, labelDx:  7, labelDy:  4 },
+  // Châu Mỹ
+  { name: 'New York',   lat: 40.7,  lon: -74.0, labelDx:  7, labelDy: -4 },
 ];
 
-// Pairs of city names to connect
+// Pairs of city names to connect (chỉ VN → nước ngoài hoặc nội địa)
 const CONNECTIONS: [string, string][] = [
-  ['Hà Nội', 'Đà Nẵng'],
+  // Nội địa
+  ['Hà Nội',  'Đà Nẵng'],
   ['Đà Nẵng', 'TP.HCM'],
-  ['Hà Nội', 'TP.HCM'],
+  ['Hà Nội',  'TP.HCM'],
+  // Hà Nội → quốc tế
   ['Hà Nội', 'Bangkok'],
-  ['TP.HCM', 'Singapore'],
-  ['Hà Nội', 'Tokyo'],
-  ['Hà Nội', 'Seoul'],
-  ['TP.HCM', 'Sydney'],
-  ['Bangkok', 'Dubai'],
-  ['Dubai', 'London'],
-  ['London', 'New York'],
-  ['New York', 'Tokyo'],
-  ['Singapore', 'Sydney'],
-  ['Tokyo', 'Seoul'],
-  ['Bắc Kinh', 'Seoul'],
-  ['Bắc Kinh', 'Thượng Hải'],
-  ['Thượng Hải', 'Tokyo'],
+  ['Hà Nội', 'Kuala Lumpur'],
+  ['Hà Nội', 'Singapore'],
+  ['Hà Nội', 'Manila'],
+  ['Hà Nội', 'Hồng Kông'],
+  ['Hà Nội', 'Đài Bắc'],
+  ['Hà Nội', 'Thượng Hải'],
   ['Hà Nội', 'Bắc Kinh'],
-  ['Thượng Hải', 'Singapore'],
+  ['Hà Nội', 'Seoul'],
+  ['Hà Nội', 'Osaka'],
+  ['Hà Nội', 'Tokyo'],
+  ['Hà Nội', 'Sydney'],
+  ['Hà Nội', 'Dubai'],
+  ['Hà Nội', 'Doha'],
+  ['Hà Nội', 'Istanbul'],
+  ['Hà Nội', 'London'],
+  ['Hà Nội', 'Paris'],
+  ['Hà Nội', 'New York'],
+  // TP.HCM → quốc tế
+  ['TP.HCM', 'Bangkok'],
+  ['TP.HCM', 'Kuala Lumpur'],
+  ['TP.HCM', 'Singapore'],
+  ['TP.HCM', 'Bali'],
+  ['TP.HCM', 'Manila'],
+  ['TP.HCM', 'Hồng Kông'],
+  ['TP.HCM', 'Đài Bắc'],
+  ['TP.HCM', 'Thượng Hải'],
+  ['TP.HCM', 'Seoul'],
+  ['TP.HCM', 'Osaka'],
+  ['TP.HCM', 'Tokyo'],
+  ['TP.HCM', 'Sydney'],
+  ['TP.HCM', 'Dubai'],
+  ['TP.HCM', 'Doha'],
+  ['TP.HCM', 'Paris'],
+  // Đà Nẵng → quốc tế (các route chính)
+  ['Đà Nẵng', 'Bangkok'],
+  ['Đà Nẵng', 'Singapore'],
+  ['Đà Nẵng', 'Kuala Lumpur'],
+  ['Đà Nẵng', 'Seoul'],
+  ['Đà Nẵng', 'Tokyo'],
+  ['Đà Nẵng', 'Hồng Kông'],
 ];
 
 type Projected = {
