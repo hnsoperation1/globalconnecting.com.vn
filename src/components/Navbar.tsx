@@ -51,8 +51,6 @@ export default function Navbar() {
             ))}
             <a
               href="https://ticket.globalconnecting.com.vn"
-              target="_blank"
-              rel="noopener noreferrer"
               className="bg-brand-orange text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-brand-orange-dark transition-colors"
             >
               Trang bán vé »
