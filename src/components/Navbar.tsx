@@ -55,7 +55,7 @@ export default function Navbar() {
               rel="noopener noreferrer"
               className="bg-brand-orange text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-brand-orange-dark transition-colors"
             >
-              Trang bán vé
+              Trang bán vé »
             </a>
           </div>
 
@@ -98,7 +98,7 @@ export default function Navbar() {
                 className="block bg-brand-orange text-white px-4 py-2.5 rounded-md text-center text-sm font-semibold"
                 onClick={() => setMenuOpen(false)}
               >
-                Trang bán vé
+                Trang bán vé »
               </a>
             </div>
           </div>
