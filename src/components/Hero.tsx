@@ -1,11 +1,117 @@
+'use client';
+import { useEffect, useState } from 'react';
+
+const GCX = 1090;   // globe center x in viewBox
+const GCY = 450;    // globe center y in viewBox
+const GR  = 320;    // globe radius
+const INIT_LON = 107; // initial center longitude (Vietnam center)
+
+type City = {
+  name: string;
+  lat: number;
+  lon: number;
+  primary?: boolean;   // Vietnamese cities
+  labelDx?: number;    // label offset x
+  labelDy?: number;    // label offset y
+};
+
+const CITIES: City[] = [
+  { name: 'Hà Nội',    lat: 21.0,  lon: 105.8, primary: true,  labelDx:  8, labelDy: -6 },
+  { name: 'Đà Nẵng',  lat: 16.0,  lon: 108.2, primary: true,  labelDx:  8, labelDy:  4 },
+  { name: 'TP.HCM',   lat: 10.8,  lon: 106.7, primary: true,  labelDx:  8, labelDy:  4 },
+  { name: 'Bangkok',  lat: 13.8,  lon: 100.5, labelDx:  7, labelDy: -4 },
+  { name: 'Singapore',lat:  1.3,  lon: 103.8, labelDx:  7, labelDy:  4 },
+  { name: 'Tokyo',    lat: 35.7,  lon: 139.7, labelDx:  7, labelDy: -4 },
+  { name: 'Seoul',    lat: 37.6,  lon: 127.0, labelDx:  7, labelDy: -4 },
+  { name: 'Sydney',   lat:-33.9,  lon: 151.2, labelDx:  7, labelDy:  4 },
+  { name: 'Dubai',    lat: 25.2,  lon:  55.3, labelDx:  7, labelDy: -4 },
+  { name: 'London',   lat: 51.5,  lon:   0.1, labelDx:  7, labelDy: -4 },
+  { name: 'New York', lat: 40.7,  lon: -74.0, labelDx:  7, labelDy: -4 },
+];
+
+// Pairs of city names to connect
+const CONNECTIONS: [string, string][] = [
+  ['Hà Nội', 'Đà Nẵng'],
+  ['Đà Nẵng', 'TP.HCM'],
+  ['Hà Nội', 'TP.HCM'],
+  ['Hà Nội', 'Bangkok'],
+  ['TP.HCM', 'Singapore'],
+  ['Hà Nội', 'Tokyo'],
+  ['Hà Nội', 'Seoul'],
+  ['TP.HCM', 'Sydney'],
+  ['Bangkok', 'Dubai'],
+  ['Dubai', 'London'],
+  ['London', 'New York'],
+  ['New York', 'Tokyo'],
+  ['Singapore', 'Sydney'],
+  ['Tokyo', 'Seoul'],
+];
+
+type Projected = {
+  x: number;
+  y: number;
+  visible: boolean;
+  depth: number; // 0–1, 1 = closest to viewer
+};
+
+function project(lat: number, lon: number, centerLon: number): Projected {
+  const φ   = (lat * Math.PI) / 180;
+  const Δλ  = ((lon - centerLon) * Math.PI) / 180;
+  const cosφ = Math.cos(φ);
+  const sinφ = Math.sin(φ);
+  const cosΔλ = Math.cos(Δλ);
+  const sinΔλ = Math.sin(Δλ);
+
+  return {
+    x: GCX + GR * cosφ * sinΔλ,
+    y: GCY - GR * sinφ,
+    visible: cosΔλ > -0.1,   // small margin so nodes fade near limb
+    depth: cosφ * cosΔλ,
+  };
+}
+
+function arcPath(p1: Projected, p2: Projected, midLat: number, midLon: number, centerLon: number): string {
+  const pm = project(midLat, midLon, centerLon);
+  // Pull control point slightly toward viewer (outward from globe center)
+  const dx = pm.x - GCX;
+  const dy = pm.y - GCY;
+  const len = Math.sqrt(dx * dx + dy * dy) || 1;
+  const cpx = pm.x + (dx / len) * 12;
+  const cpy = pm.y + (dy / len) * 12;
+  return `M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} Q ${cpx.toFixed(1)} ${cpy.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+}
+
+// Pre-build city lookup for connections
+const cityMap = Object.fromEntries(CITIES.map(c => [c.name, c]));
+
+// Latitude lines: parametric y and shrunk rx
+const LAT_LINES = [-60, -30, 0, 30, 60];
+// Longitude grid: draw as parametric curves at these Δλ offsets from center
+const LON_OFFSETS = [-90, -60, -30, 0, 30, 60, 90];
+
 export default function Hero() {
+  const [centerLon, setCenterLon] = useState(INIT_LON);
+
+  useEffect(() => {
+    const onScroll = () => {
+      // 10px scroll = 1° longitude rotation
+      setCenterLon(INIT_LON - window.scrollY * 0.1);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const projected = Object.fromEntries(
+    CITIES.map(c => [c.name, project(c.lat, c.lon, centerLon)])
+  );
+
   return (
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ background: 'linear-gradient(135deg, #072260 0%, #0B3185 45%, #CC4400 100%)' }}
     >
-      {/* Global network SVG */}
+      {/* ── GLOBE SVG ── */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none select-none"
         viewBox="0 0 1440 900"
@@ -14,154 +120,149 @@ export default function Hero() {
       >
         <defs>
           <clipPath id="globe-clip">
-            <circle cx="1090" cy="450" r="410" />
+            <circle cx={GCX} cy={GCY} r={GR} />
           </clipPath>
         </defs>
 
         {/* Globe outer ring */}
-        <circle cx="1090" cy="450" r="410" fill="none" stroke="white" strokeOpacity="0.12" strokeWidth="1.5" />
+        <circle cx={GCX} cy={GCY} r={GR} fill="none" stroke="white" strokeOpacity="0.15" strokeWidth="1.5" />
 
-        {/* Globe grid lines */}
+        {/* ── LATITUDE LINES (fixed) ── */}
         <g clipPath="url(#globe-clip)">
-          {/* Latitude lines */}
-          <line x1="680" y1="450" x2="1500" y2="450" stroke="white" strokeOpacity="0.2" strokeWidth="1" />
-          <ellipse cx="1090" cy="450" rx="410" ry="205" fill="none" stroke="white" strokeOpacity="0.1" strokeWidth="0.8" />
-          <ellipse cx="1090" cy="450" rx="410" ry="340" fill="none" stroke="white" strokeOpacity="0.1" strokeWidth="0.8" />
-          <ellipse cx="1090" cy="220" rx="320" ry="85" fill="none" stroke="white" strokeOpacity="0.09" strokeWidth="0.8" />
-          <ellipse cx="1090" cy="680" rx="320" ry="85" fill="none" stroke="white" strokeOpacity="0.09" strokeWidth="0.8" />
-          <ellipse cx="1090" cy="120" rx="160" ry="42" fill="none" stroke="white" strokeOpacity="0.07" strokeWidth="0.8" />
-          <ellipse cx="1090" cy="780" rx="160" ry="42" fill="none" stroke="white" strokeOpacity="0.07" strokeWidth="0.8" />
-          {/* Longitude lines */}
-          <ellipse cx="1090" cy="450" rx="55" ry="410" fill="none" stroke="white" strokeOpacity="0.09" strokeWidth="0.8" />
-          <ellipse cx="1090" cy="450" rx="55" ry="410" fill="none" stroke="white" strokeOpacity="0.09" strokeWidth="0.8" transform="rotate(30 1090 450)" />
-          <ellipse cx="1090" cy="450" rx="55" ry="410" fill="none" stroke="white" strokeOpacity="0.09" strokeWidth="0.8" transform="rotate(60 1090 450)" />
-          <ellipse cx="1090" cy="450" rx="55" ry="410" fill="none" stroke="white" strokeOpacity="0.09" strokeWidth="0.8" transform="rotate(90 1090 450)" />
-          <ellipse cx="1090" cy="450" rx="55" ry="410" fill="none" stroke="white" strokeOpacity="0.09" strokeWidth="0.8" transform="rotate(120 1090 450)" />
-          <ellipse cx="1090" cy="450" rx="55" ry="410" fill="none" stroke="white" strokeOpacity="0.09" strokeWidth="0.8" transform="rotate(150 1090 450)" />
+          {LAT_LINES.map(lat => {
+            const φ = (lat * Math.PI) / 180;
+            const ry = GR * Math.cos(φ);     // projected horizontal radius
+            const cy2 = GCY - GR * Math.sin(φ);
+            const op = lat === 0 ? 0.22 : 0.1;
+            return (
+              <ellipse
+                key={lat}
+                cx={GCX} cy={cy2}
+                rx={GR} ry={ry * 0.18}       // flatten to look like lat line
+                fill="none" stroke="white" strokeOpacity={op} strokeWidth={lat === 0 ? 1 : 0.7}
+              />
+            );
+          })}
+
+          {/* ── LONGITUDE LINES (dynamic — shifts with centerLon) ── */}
+          {LON_OFFSETS.map(dLon => {
+            const Δλ = (dLon * Math.PI) / 180;
+            const cosΔλ = Math.cos(Δλ);
+            if (cosΔλ < 0) return null; // behind globe
+            const rx = GR * Math.abs(Math.sin(Δλ));
+            const op = Math.abs(dLon) === 0 ? 0.2 : 0.09;
+            // x-center shifts based on how far from center longitude
+            const cx2 = GCX + GR * cosΔλ * Math.sin(Δλ);
+            return (
+              <ellipse
+                key={dLon}
+                cx={GCX} cy={GCY}
+                rx={rx} ry={GR}
+                fill="none" stroke="white" strokeOpacity={op} strokeWidth={0.8}
+              />
+            );
+          })}
         </g>
 
-        {/* === CONNECTION ARCS === */}
-        {/* Hà Nội → Tokyo */}
-        <path d="M 1025 365 Q 1110 280 1255 255" fill="none" stroke="#CC4400" strokeOpacity="0.55" strokeWidth="1.5" />
-        {/* Hà Nội → Singapore */}
-        <path d="M 1025 365 Q 1075 465 1105 535" fill="none" stroke="#CC4400" strokeOpacity="0.45" strokeWidth="1.5" />
-        {/* Hà Nội → Bangkok */}
-        <path d="M 1025 365 Q 965 408 925 448" fill="none" stroke="white" strokeOpacity="0.25" strokeWidth="1" />
-        {/* Hà Nội → Seoul */}
-        <path d="M 1025 365 Q 1130 315 1215 315" fill="none" stroke="white" strokeOpacity="0.2" strokeWidth="1" />
-        {/* Hà Nội → Sydney (long) */}
-        <path d="M 1025 365 Q 1185 495 1265 625" fill="none" stroke="white" strokeOpacity="0.18" strokeWidth="1" />
-        {/* Hà Nội → Dubai (dashed) */}
-        <path d="M 1025 365 Q 875 342 785 378" fill="none" stroke="white" strokeOpacity="0.18" strokeWidth="1" strokeDasharray="6 4" />
-        {/* Dubai → London (dashed) */}
-        <path d="M 785 378 Q 762 308 745 238" fill="none" stroke="white" strokeOpacity="0.14" strokeWidth="1" strokeDasharray="6 4" />
-        {/* London → New York (dashed) */}
-        <path d="M 745 238 Q 618 215 500 275" fill="none" stroke="white" strokeOpacity="0.14" strokeWidth="1" strokeDasharray="6 4" />
-        {/* New York → Hà Nội (long dashed arc) */}
-        <path d="M 500 275 Q 760 170 1025 365" fill="none" stroke="#CC4400" strokeOpacity="0.2" strokeWidth="1.5" strokeDasharray="8 5" />
-        {/* Singapore → Sydney */}
-        <path d="M 1105 535 Q 1185 580 1265 625" fill="none" stroke="white" strokeOpacity="0.18" strokeWidth="1" />
-        {/* Tokyo → Seoul */}
-        <path d="M 1255 255 Q 1235 285 1215 315" fill="none" stroke="white" strokeOpacity="0.2" strokeWidth="1" />
+        {/* ── CONNECTION ARCS ── */}
+        {CONNECTIONS.map(([a, b]) => {
+          const p1 = projected[a];
+          const p2 = projected[b];
+          if (!p1 || !p2) return null;
+          if (!p1.visible && !p2.visible) return null;
+          const c1 = cityMap[a];
+          const c2 = cityMap[b];
+          const midLat = (c1.lat + c2.lat) / 2;
+          const midLon = (c1.lon + c2.lon) / 2;
+          const isPrimary = c1.primary && c2.primary;
+          const isViVietnam = c1.primary || c2.primary;
+          const avgDepth = (p1.depth + p2.depth) / 2;
+          const op = Math.max(0, Math.min(1, avgDepth)) * (isPrimary ? 0.7 : isViVietnam ? 0.5 : 0.2);
+          if (op < 0.03) return null;
+          const d = arcPath(p1, p2, midLat, midLon, centerLon);
+          const isLong = Math.abs(c1.lon - c2.lon) > 60;
+          return (
+            <path
+              key={`${a}-${b}`}
+              d={d}
+              fill="none"
+              stroke={isViVietnam ? '#CC4400' : 'white'}
+              strokeOpacity={op}
+              strokeWidth={isPrimary ? 1.8 : isViVietnam ? 1.4 : 1}
+              strokeDasharray={isLong ? '7 4' : undefined}
+              clipPath="url(#globe-clip)"
+            />
+          );
+        })}
 
-        {/* === CITY NODES === */}
-        {/* Hà Nội – main node, pulsing */}
-        <circle cx="1025" cy="365" r="6" fill="#CC4400" />
-        <circle cx="1025" cy="365" r="6" fill="none" stroke="#CC4400" strokeWidth="1.5">
-          <animate attributeName="r" values="6;22;6" dur="2.5s" repeatCount="indefinite" />
-          <animate attributeName="stroke-opacity" values="0.8;0;0.8" dur="2.5s" repeatCount="indefinite" />
-        </circle>
-        <text x="1036" y="358" fill="white" fontSize="11" fontFamily="Arial, sans-serif" fontWeight="600" opacity="0.95">Hà Nội</text>
+        {/* ── CITY NODES ── */}
+        {CITIES.map(city => {
+          const p = projected[city.name];
+          if (!p || !p.visible) return null;
+          const depth = Math.max(0, p.depth);
+          const r = city.primary ? 5.5 : 3.5;
+          const fillOp = city.primary ? 0.95 : 0.55 + depth * 0.3;
+          const textOp = city.primary ? 0.95 : 0.45 + depth * 0.3;
+          return (
+            <g key={city.name} clipPath="url(#globe-clip)">
+              {/* Pulse ring for Vietnamese cities */}
+              {city.primary && (
+                <circle cx={p.x} cy={p.y} r={r} fill="none" stroke="#CC4400" strokeWidth="1.2">
+                  <animate attributeName="r" values={`${r};${r + 14};${r}`} dur={city.name === 'Hà Nội' ? '2.4s' : '3s'} repeatCount="indefinite" />
+                  <animate attributeName="stroke-opacity" values="0.8;0;0.8" dur={city.name === 'Hà Nội' ? '2.4s' : '3s'} repeatCount="indefinite" />
+                </circle>
+              )}
+              <circle cx={p.x} cy={p.y} r={r} fill={city.primary ? '#CC4400' : 'white'} opacity={fillOp} />
+              <text
+                x={p.x + (city.labelDx ?? 7)}
+                y={p.y + (city.labelDy ?? -4)}
+                fill="white"
+                fontSize={city.primary ? 11 : 9.5}
+                fontFamily="Arial, sans-serif"
+                fontWeight={city.primary ? '700' : '400'}
+                opacity={textOp}
+              >
+                {city.name}
+              </text>
+            </g>
+          );
+        })}
 
-        {/* Tokyo */}
-        <circle cx="1255" cy="255" r="4.5" fill="#CC4400" opacity="0.9" />
-        <circle cx="1255" cy="255" r="4.5" fill="none" stroke="#CC4400" strokeWidth="1">
-          <animate attributeName="r" values="4;16;4" dur="3.2s" repeatCount="indefinite" />
-          <animate attributeName="stroke-opacity" values="0.6;0;0.6" dur="3.2s" repeatCount="indefinite" />
-        </circle>
-        <text x="1265" y="250" fill="white" fontSize="10" fontFamily="Arial, sans-serif" opacity="0.75">Tokyo</text>
-
-        {/* Singapore */}
-        <circle cx="1105" cy="535" r="4" fill="white" opacity="0.85" />
-        <circle cx="1105" cy="535" r="4" fill="none" stroke="white" strokeWidth="1">
-          <animate attributeName="r" values="4;13;4" dur="3.8s" repeatCount="indefinite" />
-          <animate attributeName="stroke-opacity" values="0.5;0;0.5" dur="3.8s" repeatCount="indefinite" />
-        </circle>
-        <text x="1115" y="530" fill="white" fontSize="10" fontFamily="Arial, sans-serif" opacity="0.65">Singapore</text>
-
-        {/* Seoul */}
-        <circle cx="1215" cy="315" r="3.5" fill="white" opacity="0.75" />
-        <text x="1223" y="311" fill="white" fontSize="10" fontFamily="Arial, sans-serif" opacity="0.6">Seoul</text>
-
-        {/* Bangkok */}
-        <circle cx="925" cy="448" r="3.5" fill="white" opacity="0.7" />
-        <text x="933" y="444" fill="white" fontSize="10" fontFamily="Arial, sans-serif" opacity="0.55">Bangkok</text>
-
-        {/* Sydney */}
-        <circle cx="1265" cy="625" r="3.5" fill="white" opacity="0.6" />
-        <text x="1273" y="620" fill="white" fontSize="10" fontFamily="Arial, sans-serif" opacity="0.5">Sydney</text>
-
-        {/* Dubai */}
-        <circle cx="785" cy="378" r="3.5" fill="white" opacity="0.55" />
-        <text x="793" y="374" fill="white" fontSize="10" fontFamily="Arial, sans-serif" opacity="0.45">Dubai</text>
-
-        {/* London */}
-        <circle cx="745" cy="238" r="3.5" fill="white" opacity="0.5" />
-        <text x="753" y="234" fill="white" fontSize="10" fontFamily="Arial, sans-serif" opacity="0.4">London</text>
-
-        {/* New York */}
-        <circle cx="500" cy="275" r="3.5" fill="white" opacity="0.45" />
-        <text x="508" y="271" fill="white" fontSize="10" fontFamily="Arial, sans-serif" opacity="0.38">New York</text>
-
-        {/* === BACKGROUND SCATTER DOTS === */}
+        {/* ── BACKGROUND SCATTER DOTS ── */}
         {([
-          [175, 115, 0.12], [305, 75, 0.1], [115, 245, 0.13], [425, 175, 0.1],
-          [75, 395, 0.12], [195, 505, 0.1], [345, 655, 0.12], [115, 725, 0.1],
-          [475, 785, 0.11], [605, 685, 0.1], [645, 145, 0.1], [745, 555, 0.08],
-          [545, 425, 0.08], [445, 555, 0.08], [275, 345, 0.1], [380, 310, 0.08],
-          [640, 480, 0.07], [560, 220, 0.09], [230, 170, 0.08], [490, 640, 0.07],
-        ] as [number, number, number][]).map(([x, y, op], i) => (
+          [175,115,0.12],[305,75,0.09],[115,245,0.12],[425,175,0.09],
+          [75,395,0.11],[195,505,0.09],[345,655,0.11],[115,725,0.09],
+          [475,785,0.10],[600,685,0.09],[645,145,0.09],[550,420,0.08],
+          [445,555,0.08],[275,345,0.09],[380,310,0.08],[560,220,0.08],
+        ] as [number,number,number][]).map(([x,y,op],i) => (
           <circle key={i} cx={x} cy={y} r="1.5" fill="white" opacity={op} />
         ))}
-
-        {/* Thin lines between scatter dots */}
-        <line x1="175" y1="115" x2="305" y2="75" stroke="white" strokeOpacity="0.05" strokeWidth="0.7" />
-        <line x1="115" y1="245" x2="175" y2="115" stroke="white" strokeOpacity="0.05" strokeWidth="0.7" />
-        <line x1="425" y1="175" x2="305" y2="75" stroke="white" strokeOpacity="0.05" strokeWidth="0.7" />
-        <line x1="75" y1="395" x2="115" y2="245" stroke="white" strokeOpacity="0.05" strokeWidth="0.7" />
-        <line x1="195" y1="505" x2="75" y2="395" stroke="white" strokeOpacity="0.05" strokeWidth="0.7" />
-        <line x1="345" y1="655" x2="195" y2="505" stroke="white" strokeOpacity="0.05" strokeWidth="0.7" />
-        <line x1="275" y1="345" x2="115" y2="245" stroke="white" strokeOpacity="0.05" strokeWidth="0.7" />
-        <line x1="380" y1="310" x2="425" y2="175" stroke="white" strokeOpacity="0.05" strokeWidth="0.7" />
-        <line x1="560" y1="220" x2="380" y2="310" stroke="white" strokeOpacity="0.05" strokeWidth="0.7" />
-        <line x1="645" y1="145" x2="560" y2="220" stroke="white" strokeOpacity="0.05" strokeWidth="0.7" />
-        <line x1="500" y1="275" x2="645" y2="145" stroke="white" strokeOpacity="0.04" strokeWidth="0.7" />
-        <line x1="640" y1="480" x2="545" y2="425" stroke="white" strokeOpacity="0.04" strokeWidth="0.7" />
-        <line x1="745" y1="555" x2="640" y2="480" stroke="white" strokeOpacity="0.04" strokeWidth="0.7" />
+        <line x1="175" y1="115" x2="305" y2="75"  stroke="white" strokeOpacity="0.05" strokeWidth="0.7"/>
+        <line x1="115" y1="245" x2="175" y2="115" stroke="white" strokeOpacity="0.05" strokeWidth="0.7"/>
+        <line x1="425" y1="175" x2="305" y2="75"  stroke="white" strokeOpacity="0.05" strokeWidth="0.7"/>
+        <line x1="75"  y1="395" x2="115" y2="245" stroke="white" strokeOpacity="0.05" strokeWidth="0.7"/>
+        <line x1="560" y1="220" x2="380" y2="310" stroke="white" strokeOpacity="0.05" strokeWidth="0.7"/>
+        <line x1="645" y1="145" x2="560" y2="220" stroke="white" strokeOpacity="0.05" strokeWidth="0.7"/>
       </svg>
 
-      {/* Content */}
+      {/* ── HERO CONTENT ── */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-        {/* Badge */}
         <div className="inline-flex items-center gap-2 bg-white/10 text-white/90 text-sm px-4 py-2 rounded-full mb-8 backdrop-blur-sm border border-white/20">
           <span className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
           Công ty TNHH Kết Nối Du Lịch Việt Nam Toàn Cầu
         </div>
 
-        {/* Heading */}
         <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-6">
           Kết Nối Bạn Với
           <br />
           <span className="text-brand-orange">Thế Giới</span>
         </h1>
 
-        {/* Subtext */}
         <p className="text-lg md:text-xl text-white/75 mb-10 max-w-2xl mx-auto leading-relaxed">
           Dịch vụ du lịch trọn gói, vé máy bay giá tốt và tổ chức sự kiện chuyên nghiệp —
           đưa bạn đến mọi điểm đến trên toàn cầu.
         </p>
 
-        {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
             href="/dich-vu"
@@ -177,7 +278,6 @@ export default function Hero() {
           </a>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-3 gap-6 mt-20 pt-10 border-t border-white/15">
           <div>
             <div className="text-3xl md:text-4xl font-bold text-brand-orange">6+</div>
@@ -194,7 +294,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
         <svg className="w-6 h-6 text-white/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
