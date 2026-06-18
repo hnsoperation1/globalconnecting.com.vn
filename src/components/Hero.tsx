@@ -266,8 +266,9 @@ export default function Hero() {
           const p = proj[city.name];
           if (!p?.visible) return null;
           const r   = city.primary ? 5.5 : 3.5;
-          const fOp = city.primary ? 0.95 : 0.45 + p.depth * 0.45;
-          const tOp = city.primary ? 0.95 : 0.35 + p.depth * 0.5;
+          const baseOp = Math.pow(p.depth, 2.5);
+          const fOp = city.primary ? 0.95 : baseOp * 0.88;
+          const tOp = city.primary ? 0.95 : baseOp * 0.80;
           return (
             <g key={city.name} clipPath="url(#gc)">
               {city.primary && (
