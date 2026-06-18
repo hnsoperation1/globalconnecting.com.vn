@@ -91,8 +91,6 @@ export default function Navbar() {
             <div className="px-4 pt-3">
               <a
                 href="https://ticket.globalconnecting.com.vn"
-                target="_blank"
-                rel="noopener noreferrer"
                 className="block bg-brand-orange text-white px-4 py-2.5 rounded-md text-center text-sm font-semibold"
                 onClick={() => setMenuOpen(false)}
               >

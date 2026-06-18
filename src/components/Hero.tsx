@@ -1,159 +1,201 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-const GCX = 1090;   // globe center x in viewBox
-const GCY = 450;    // globe center y in viewBox
-const GR  = 320;    // globe radius
-const INIT_LON = 107; // initial center longitude (Vietnam center)
+// Globe display constants
+const GCX      = 1090;  // center x in viewBox
+const GCY      = 450;   // center y in viewBox
+const GR       = 320;   // radius
+const INIT_LON = 122;   // initial center longitude (eastern Asia → Vietnam bottom-left)
+const INIT_LAT = 30;    // tilt: viewer is above 30°N → Vietnam appears lower-left
 
 type City = {
   name: string;
   lat: number;
   lon: number;
-  primary?: boolean;   // Vietnamese cities
-  labelDx?: number;    // label offset x
-  labelDy?: number;    // label offset y
+  primary?: boolean;  // Vietnamese cities
+  lx?: number;        // label offset x
+  ly?: number;        // label offset y
 };
 
 const CITIES: City[] = [
   // Việt Nam
-  { name: 'Hà Nội',      lat: 21.0,  lon: 105.8, primary: true, labelDx:  8, labelDy: -6 },
-  { name: 'Đà Nẵng',    lat: 16.0,  lon: 108.2, primary: true, labelDx:  8, labelDy:  4 },
-  { name: 'TP.HCM',     lat: 10.8,  lon: 106.7, primary: true, labelDx:  8, labelDy:  4 },
+  { name: 'Hà Nội',       lat:  21.0, lon: 105.8, primary: true, lx:  8, ly: -6 },
+  { name: 'Đà Nẵng',     lat:  16.0, lon: 108.2, primary: true, lx:  8, ly:  4 },
+  { name: 'TP.HCM',      lat:  10.8, lon: 106.7, primary: true, lx:  8, ly:  4 },
   // Đông Nam Á
-  { name: 'Bangkok',    lat: 13.8,  lon: 100.5, labelDx:  7, labelDy: -4 },
-  { name: 'Singapore',  lat:  1.3,  lon: 103.8, labelDx:  7, labelDy:  4 },
-  { name: 'Kuala Lumpur', lat: 3.1, lon: 101.7, labelDx:  7, labelDy: -4 },
-  { name: 'Bali',       lat: -8.7,  lon: 115.2, labelDx:  7, labelDy:  4 },
-  { name: 'Manila',     lat: 14.6,  lon: 121.0, labelDx:  7, labelDy: -4 },
+  { name: 'Bangkok',     lat:  13.8, lon: 100.5,  lx:  7, ly: -5 },
+  { name: 'Kuala Lumpur',lat:   3.1, lon: 101.7,  lx:  7, ly: -5 },
+  { name: 'Singapore',   lat:   1.3, lon: 103.8,  lx:  7, ly:  4 },
+  { name: 'Manila',      lat:  14.6, lon: 121.0,  lx:  7, ly: -5 },
+  { name: 'Bali',        lat:  -8.7, lon: 115.2,  lx:  7, ly:  4 },
   // Đông Bắc Á
-  { name: 'Hồng Kông',  lat: 22.3,  lon: 114.2, labelDx:  7, labelDy: -4 },
-  { name: 'Đài Bắc',   lat: 25.0,  lon: 121.5, labelDx:  7, labelDy: -4 },
-  { name: 'Thượng Hải', lat: 31.2,  lon: 121.5, labelDx:  7, labelDy:  4 },
-  { name: 'Bắc Kinh',  lat: 39.9,  lon: 116.4, labelDx:  7, labelDy: -4 },
-  { name: 'Seoul',      lat: 37.6,  lon: 127.0, labelDx:  7, labelDy: -4 },
-  { name: 'Osaka',      lat: 34.7,  lon: 135.5, labelDx:  7, labelDy:  4 },
-  { name: 'Tokyo',      lat: 35.7,  lon: 139.7, labelDx:  7, labelDy: -4 },
+  { name: 'Hồng Kông',   lat:  22.3, lon: 114.2,  lx:  7, ly: -5 },
+  { name: 'Đài Bắc',    lat:  25.0, lon: 121.5,  lx:  7, ly: -5 },
+  { name: 'Thượng Hải',  lat:  31.2, lon: 121.5,  lx:  7, ly:  4 },
+  { name: 'Bắc Kinh',   lat:  39.9, lon: 116.4,  lx:  7, ly: -5 },
+  { name: 'Seoul',       lat:  37.6, lon: 127.0,  lx:  7, ly: -5 },
+  { name: 'Osaka',       lat:  34.7, lon: 135.5,  lx:  7, ly:  4 },
+  { name: 'Tokyo',       lat:  35.7, lon: 139.7,  lx:  7, ly: -5 },
   // Châu Đại Dương
-  { name: 'Sydney',     lat:-33.9,  lon: 151.2, labelDx:  7, labelDy:  4 },
+  { name: 'Sydney',      lat: -33.9, lon: 151.2,  lx:  7, ly:  4 },
   // Trung Đông
-  { name: 'Dubai',      lat: 25.2,  lon:  55.3, labelDx:  7, labelDy: -4 },
-  { name: 'Doha',       lat: 25.3,  lon:  51.5, labelDx:  7, labelDy:  4 },
+  { name: 'Dubai',       lat:  25.2, lon:  55.3,  lx:  7, ly: -5 },
+  { name: 'Doha',        lat:  25.3, lon:  51.5,  lx:  7, ly:  4 },
+  // Nam Á
+  { name: 'New Delhi',   lat:  28.6, lon:  77.2,  lx:  7, ly: -5 },
   // Châu Âu
-  { name: 'Istanbul',   lat: 41.0,  lon:  29.0, labelDx:  7, labelDy: -4 },
-  { name: 'London',     lat: 51.5,  lon:   0.1, labelDx:  7, labelDy: -4 },
-  { name: 'Paris',      lat: 48.9,  lon:   2.3, labelDx:  7, labelDy:  4 },
+  { name: 'Istanbul',    lat:  41.0, lon:  29.0,  lx:  7, ly: -5 },
+  { name: 'Matxcơva',   lat:  55.8, lon:  37.6,  lx:  7, ly: -5 },
+  { name: 'London',      lat:  51.5, lon:   0.1,  lx:  7, ly: -5 },
+  { name: 'Paris',       lat:  48.9, lon:   2.3,  lx:  7, ly:  4 },
   // Châu Mỹ
-  { name: 'New York',   lat: 40.7,  lon: -74.0, labelDx:  7, labelDy: -4 },
+  { name: 'New York',    lat:  40.7, lon: -74.0,  lx:  7, ly: -5 },
 ];
 
-// Pairs of city names to connect (chỉ VN → nước ngoài hoặc nội địa)
 const CONNECTIONS: [string, string][] = [
   // Nội địa
   ['Hà Nội',  'Đà Nẵng'],
   ['Đà Nẵng', 'TP.HCM'],
   ['Hà Nội',  'TP.HCM'],
   // Hà Nội → quốc tế
-  ['Hà Nội', 'Bangkok'],
-  ['Hà Nội', 'Kuala Lumpur'],
-  ['Hà Nội', 'Singapore'],
-  ['Hà Nội', 'Manila'],
-  ['Hà Nội', 'Hồng Kông'],
-  ['Hà Nội', 'Đài Bắc'],
-  ['Hà Nội', 'Thượng Hải'],
-  ['Hà Nội', 'Bắc Kinh'],
-  ['Hà Nội', 'Seoul'],
-  ['Hà Nội', 'Osaka'],
-  ['Hà Nội', 'Tokyo'],
-  ['Hà Nội', 'Sydney'],
-  ['Hà Nội', 'Dubai'],
-  ['Hà Nội', 'Doha'],
-  ['Hà Nội', 'Istanbul'],
-  ['Hà Nội', 'London'],
-  ['Hà Nội', 'Paris'],
-  ['Hà Nội', 'New York'],
+  ['Hà Nội', 'Bangkok'],     ['Hà Nội', 'Kuala Lumpur'],
+  ['Hà Nội', 'Singapore'],   ['Hà Nội', 'Manila'],
+  ['Hà Nội', 'Hồng Kông'],  ['Hà Nội', 'Đài Bắc'],
+  ['Hà Nội', 'Thượng Hải'], ['Hà Nội', 'Bắc Kinh'],
+  ['Hà Nội', 'Seoul'],       ['Hà Nội', 'Osaka'],
+  ['Hà Nội', 'Tokyo'],       ['Hà Nội', 'Sydney'],
+  ['Hà Nội', 'Dubai'],       ['Hà Nội', 'Doha'],
+  ['Hà Nội', 'New Delhi'],   ['Hà Nội', 'Istanbul'],
+  ['Hà Nội', 'Matxcơva'],   ['Hà Nội', 'London'],
+  ['Hà Nội', 'Paris'],       ['Hà Nội', 'New York'],
   // TP.HCM → quốc tế
-  ['TP.HCM', 'Bangkok'],
-  ['TP.HCM', 'Kuala Lumpur'],
-  ['TP.HCM', 'Singapore'],
-  ['TP.HCM', 'Bali'],
-  ['TP.HCM', 'Manila'],
-  ['TP.HCM', 'Hồng Kông'],
-  ['TP.HCM', 'Đài Bắc'],
-  ['TP.HCM', 'Thượng Hải'],
-  ['TP.HCM', 'Seoul'],
-  ['TP.HCM', 'Osaka'],
-  ['TP.HCM', 'Tokyo'],
-  ['TP.HCM', 'Sydney'],
-  ['TP.HCM', 'Dubai'],
-  ['TP.HCM', 'Doha'],
-  ['TP.HCM', 'Paris'],
-  // Đà Nẵng → quốc tế (các route chính)
-  ['Đà Nẵng', 'Bangkok'],
-  ['Đà Nẵng', 'Singapore'],
-  ['Đà Nẵng', 'Kuala Lumpur'],
-  ['Đà Nẵng', 'Seoul'],
-  ['Đà Nẵng', 'Tokyo'],
-  ['Đà Nẵng', 'Hồng Kông'],
+  ['TP.HCM', 'Bangkok'],     ['TP.HCM', 'Kuala Lumpur'],
+  ['TP.HCM', 'Singapore'],   ['TP.HCM', 'Bali'],
+  ['TP.HCM', 'Manila'],      ['TP.HCM', 'Hồng Kông'],
+  ['TP.HCM', 'Đài Bắc'],   ['TP.HCM', 'Thượng Hải'],
+  ['TP.HCM', 'Seoul'],       ['TP.HCM', 'Osaka'],
+  ['TP.HCM', 'Tokyo'],       ['TP.HCM', 'Sydney'],
+  ['TP.HCM', 'Dubai'],       ['TP.HCM', 'Doha'],
+  ['TP.HCM', 'New Delhi'],   ['TP.HCM', 'Paris'],
+  // Đà Nẵng → quốc tế
+  ['Đà Nẵng', 'Bangkok'],   ['Đà Nẵng', 'Singapore'],
+  ['Đà Nẵng', 'Kuala Lumpur'], ['Đà Nẵng', 'Seoul'],
+  ['Đà Nẵng', 'Tokyo'],     ['Đà Nẵng', 'Hồng Kông'],
 ];
 
-type Projected = {
-  x: number;
-  y: number;
-  visible: boolean;
-  depth: number; // 0–1, 1 = closest to viewer
-};
+// ── Orthographic projection ─────────────────────────────────────────────────
+// Projects (lat, lon) onto 2D screen given viewer center (cLat, cLon).
+// ROLL_DEG: axial tilt — negative = CCW → North Pole leans west, South leans east.
+const ROLL_DEG = -12;
+const ROLL_RAD = (ROLL_DEG * Math.PI) / 180;
+const cosRoll  = Math.cos(ROLL_RAD);
+const sinRoll  = Math.sin(ROLL_RAD);
 
-function project(lat: number, lon: number, centerLon: number): Projected {
-  const φ   = (lat * Math.PI) / 180;
-  const Δλ  = ((lon - centerLon) * Math.PI) / 180;
-  const cosφ = Math.cos(φ);
-  const sinφ = Math.sin(φ);
-  const cosΔλ = Math.cos(Δλ);
-  const sinΔλ = Math.sin(Δλ);
+type P2D = { x: number; y: number; visible: boolean; depth: number };
 
+function project(lat: number, lon: number, cLat: number, cLon: number): P2D {
+  const phi   = (lat  * Math.PI) / 180;
+  const phi0  = (cLat * Math.PI) / 180;
+  const dLon  = ((lon - cLon) * Math.PI) / 180;
+  const sinPhi  = Math.sin(phi),  cosPhi  = Math.cos(phi);
+  const sinPhi0 = Math.sin(phi0), cosPhi0 = Math.cos(phi0);
+  const sinDL   = Math.sin(dLon), cosDL   = Math.cos(dLon);
+  const depth = sinPhi * sinPhi0 + cosPhi * cosPhi0 * cosDL;
+  // Raw projected position
+  const rx = GR * cosPhi * sinDL;
+  const ry = -GR * (sinPhi * cosPhi0 - cosPhi * cosDL * sinPhi0);
+  // Apply axial roll (2D rotation around globe centre)
   return {
-    x: GCX + GR * cosφ * sinΔλ,
-    y: GCY - GR * sinφ,
-    visible: cosΔλ > -0.1,   // small margin so nodes fade near limb
-    depth: cosφ * cosΔλ,
+    x: GCX + rx * cosRoll - ry * sinRoll,
+    y: GCY + rx * sinRoll + ry * cosRoll,
+    visible: depth > 0,
+    depth: Math.max(0, depth),
   };
 }
 
-function arcPath(p1: Projected, p2: Projected, midLat: number, midLon: number, centerLon: number): string {
-  const pm = project(midLat, midLon, centerLon);
-  // Pull control point slightly toward viewer (outward from globe center)
-  const dx = pm.x - GCX;
-  const dy = pm.y - GCY;
-  const len = Math.sqrt(dx * dx + dy * dy) || 1;
-  const cpx = pm.x + (dx / len) * 12;
-  const cpy = pm.y + (dy / len) * 12;
-  return `M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} Q ${cpx.toFixed(1)} ${cpy.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+// Sample a latitude circle as an SVG path
+function latPath(lat: number, cLat: number, cLon: number): string {
+  const pts: string[] = [];
+  for (let i = 0; i <= 180; i++) {
+    const lon = cLon - 180 + (360 * i) / 180;
+    const p = project(lat, lon, cLat, cLon);
+    if (p.visible) pts.push(`${p.x.toFixed(1)},${p.y.toFixed(1)}`);
+  }
+  if (pts.length < 2) return '';
+  return 'M ' + pts.join(' L ');
 }
 
-// Pre-build city lookup for connections
+// Sample a longitude line as an SVG path
+function lonPath(lon: number, cLat: number, cLon: number): string {
+  const pts: string[] = [];
+  for (let i = 0; i <= 90; i++) {
+    const lat = -90 + (180 * i) / 90;
+    const p = project(lat, lon, cLat, cLon);
+    if (p.visible) pts.push(`${p.x.toFixed(1)},${p.y.toFixed(1)}`);
+  }
+  if (pts.length < 2) return '';
+  return 'M ' + pts.join(' L ');
+}
+
+// Sample a great-circle arc between two geo-points as an SVG path
+function arcPath(
+  lat1: number, lon1: number,
+  lat2: number, lon2: number,
+  cLat: number, cLon: number,
+): string {
+  // SLERP in Cartesian then re-project
+  const toXYZ = (la: number, lo: number): [number, number, number] => {
+    const φ = (la * Math.PI) / 180, λ = (lo * Math.PI) / 180;
+    return [Math.cos(φ) * Math.cos(λ), Math.cos(φ) * Math.sin(λ), Math.sin(φ)];
+  };
+  const [x1, y1, z1] = toXYZ(lat1, lon1);
+  const [x2, y2, z2] = toXYZ(lat2, lon2);
+  const dot   = Math.max(-1, Math.min(1, x1*x2 + y1*y2 + z1*z2));
+  const omega = Math.acos(dot);
+  const sinO  = Math.sin(omega);
+
+  const N = 40;
+  let path = '', inSeg = false;
+  for (let i = 0; i <= N; i++) {
+    const t = i / N;
+    let sx, sy, sz;
+    if (sinO < 0.0001) { sx = x1; sy = y1; sz = z1; }
+    else {
+      const a = Math.sin((1 - t) * omega) / sinO;
+      const b = Math.sin(t * omega) / sinO;
+      sx = a*x1 + b*x2; sy = a*y1 + b*y2; sz = a*z1 + b*z2;
+    }
+    const sLat = (Math.asin(sz) * 180) / Math.PI;
+    const sLon = (Math.atan2(sy, sx) * 180) / Math.PI;
+    const p = project(sLat, sLon, cLat, cLon);
+    if (p.visible) {
+      path += inSeg ? ` L ${p.x.toFixed(1)},${p.y.toFixed(1)}` : `M ${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+      inSeg = true;
+    } else {
+      inSeg = false;
+    }
+  }
+  return path;
+}
+
 const cityMap = Object.fromEntries(CITIES.map(c => [c.name, c]));
 
-// Latitude lines: parametric y and shrunk rx
-const LAT_LINES = [-60, -30, 0, 30, 60];
-// Longitude grid: draw as parametric curves at these Δλ offsets from center
-const LON_OFFSETS = [-90, -60, -30, 0, 30, 60, 90];
+// Latitude grid lines
+const LAT_GRID = [-60, -30, 0, 30, 60];
+// Fixed world meridians every 30° — they rotate as cLon changes
+const LON_GRID = [-150, -120, -90, -60, -30, 0, 30, 60, 90, 120, 150, 180];
 
 export default function Hero() {
-  const [centerLon, setCenterLon] = useState(INIT_LON);
+  const [cLon, setCLon] = useState(INIT_LON);
+  const cLat = INIT_LAT; // latitude tilt stays fixed
 
   useEffect(() => {
-    const onScroll = () => {
-      // 10px scroll = 1° longitude rotation
-      setCenterLon(INIT_LON - window.scrollY * 0.1);
-    };
+    const onScroll = () => setCLon(INIT_LON - window.scrollY * 0.12);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const projected = Object.fromEntries(
-    CITIES.map(c => [c.name, project(c.lat, c.lon, centerLon)])
-  );
+  const proj = Object.fromEntries(CITIES.map(c => [c.name, project(c.lat, c.lon, cLat, cLon)]));
 
   return (
     <section
@@ -169,108 +211,86 @@ export default function Hero() {
         aria-hidden="true"
       >
         <defs>
-          <clipPath id="globe-clip">
+          <clipPath id="gc">
             <circle cx={GCX} cy={GCY} r={GR} />
           </clipPath>
         </defs>
 
-        {/* Globe outer ring */}
+        {/* Outer ring (fixed) */}
         <circle cx={GCX} cy={GCY} r={GR} fill="none" stroke="white" strokeOpacity="0.15" strokeWidth="1.5" />
 
-        {/* ── LATITUDE LINES (fixed) ── */}
-        <g clipPath="url(#globe-clip)">
-          {LAT_LINES.map(lat => {
-            const φ = (lat * Math.PI) / 180;
-            const ry = GR * Math.cos(φ);     // projected horizontal radius
-            const cy2 = GCY - GR * Math.sin(φ);
-            const op = lat === 0 ? 0.22 : 0.1;
+        {/* ── GRID LINES (clipped) ── */}
+        <g clipPath="url(#gc)">
+          {LAT_GRID.map(lat => {
+            const d = latPath(lat, cLat, cLon);
+            if (!d) return null;
             return (
-              <ellipse
-                key={lat}
-                cx={GCX} cy={cy2}
-                rx={GR} ry={ry * 0.18}       // flatten to look like lat line
-                fill="none" stroke="white" strokeOpacity={op} strokeWidth={lat === 0 ? 1 : 0.7}
-              />
+              <path key={`lat${lat}`} d={d} fill="none"
+                stroke="white" strokeOpacity={lat === 0 ? 0.22 : 0.09} strokeWidth={lat === 0 ? 1 : 0.7} />
             );
           })}
-
-          {/* ── LONGITUDE LINES (dynamic — shifts with centerLon) ── */}
-          {LON_OFFSETS.map(dLon => {
-            const Δλ = (dLon * Math.PI) / 180;
-            const cosΔλ = Math.cos(Δλ);
-            if (cosΔλ < 0) return null; // behind globe
-            const rx = GR * Math.abs(Math.sin(Δλ));
-            const op = Math.abs(dLon) === 0 ? 0.2 : 0.09;
-            // x-center shifts based on how far from center longitude
-            const cx2 = GCX + GR * cosΔλ * Math.sin(Δλ);
+          {LON_GRID.map(lon => {
+            const d = lonPath(lon, cLat, cLon);
+            if (!d) return null;
             return (
-              <ellipse
-                key={dLon}
-                cx={GCX} cy={GCY}
-                rx={rx} ry={GR}
-                fill="none" stroke="white" strokeOpacity={op} strokeWidth={0.8}
-              />
+              <path key={`lon${lon}`} d={d} fill="none"
+                stroke="white" strokeOpacity="0.09" strokeWidth="0.7" />
             );
           })}
         </g>
 
         {/* ── CONNECTION ARCS ── */}
         {CONNECTIONS.map(([a, b]) => {
-          const p1 = projected[a];
-          const p2 = projected[b];
-          if (!p1 || !p2) return null;
-          if (!p1.visible && !p2.visible) return null;
-          const c1 = cityMap[a];
-          const c2 = cityMap[b];
-          const midLat = (c1.lat + c2.lat) / 2;
-          const midLon = (c1.lon + c2.lon) / 2;
-          const isPrimary = c1.primary && c2.primary;
-          const isViVietnam = c1.primary || c2.primary;
-          const avgDepth = (p1.depth + p2.depth) / 2;
-          const op = Math.max(0, Math.min(1, avgDepth)) * (isPrimary ? 0.7 : isViVietnam ? 0.5 : 0.2);
-          if (op < 0.03) return null;
-          const d = arcPath(p1, p2, midLat, midLon, centerLon);
-          const isLong = Math.abs(c1.lon - c2.lon) > 60;
+          const pa = proj[a], pb = proj[b];
+          if (!pa?.visible && !pb?.visible) return null;
+          const ca = cityMap[a], cb = cityMap[b];
+          const avgDepth = ((pa?.depth ?? 0) + (pb?.depth ?? 0)) / 2;
+          const isDomestic = ca.primary && cb.primary;
+          const isVN       = ca.primary || cb.primary;
+          const op = isDomestic ? 0.75 : isVN ? avgDepth * 0.55 : avgDepth * 0.18;
+          if (op < 0.04) return null;
+          const d = arcPath(ca.lat, ca.lon, cb.lat, cb.lon, cLat, cLon);
+          if (!d) return null;
           return (
-            <path
-              key={`${a}-${b}`}
-              d={d}
-              fill="none"
-              stroke={isViVietnam ? '#CC4400' : 'white'}
+            <path key={`${a}-${b}`} d={d} fill="none"
+              stroke={isVN ? '#CC4400' : 'white'}
               strokeOpacity={op}
-              strokeWidth={isPrimary ? 1.8 : isViVietnam ? 1.4 : 1}
-              strokeDasharray={isLong ? '7 4' : undefined}
-              clipPath="url(#globe-clip)"
+              strokeWidth={isDomestic ? 2 : isVN ? 1.4 : 1}
+              clipPath="url(#gc)"
             />
           );
         })}
 
         {/* ── CITY NODES ── */}
         {CITIES.map(city => {
-          const p = projected[city.name];
-          if (!p || !p.visible) return null;
-          const depth = Math.max(0, p.depth);
-          const r = city.primary ? 5.5 : 3.5;
-          const fillOp = city.primary ? 0.95 : 0.55 + depth * 0.3;
-          const textOp = city.primary ? 0.95 : 0.45 + depth * 0.3;
+          const p = proj[city.name];
+          if (!p?.visible) return null;
+          const r   = city.primary ? 5.5 : 3.5;
+          const fOp = city.primary ? 0.95 : 0.45 + p.depth * 0.45;
+          const tOp = city.primary ? 0.95 : 0.35 + p.depth * 0.5;
           return (
-            <g key={city.name} clipPath="url(#globe-clip)">
-              {/* Pulse ring for Vietnamese cities */}
+            <g key={city.name} clipPath="url(#gc)">
               {city.primary && (
                 <circle cx={p.x} cy={p.y} r={r} fill="none" stroke="#CC4400" strokeWidth="1.2">
-                  <animate attributeName="r" values={`${r};${r + 14};${r}`} dur={city.name === 'Hà Nội' ? '2.4s' : '3s'} repeatCount="indefinite" />
-                  <animate attributeName="stroke-opacity" values="0.8;0;0.8" dur={city.name === 'Hà Nội' ? '2.4s' : '3s'} repeatCount="indefinite" />
+                  <animate attributeName="r"
+                    values={`${r};${r + 14};${r}`}
+                    dur={city.name === 'Hà Nội' ? '2.4s' : '3.1s'}
+                    repeatCount="indefinite" />
+                  <animate attributeName="stroke-opacity"
+                    values="0.8;0;0.8"
+                    dur={city.name === 'Hà Nội' ? '2.4s' : '3.1s'}
+                    repeatCount="indefinite" />
                 </circle>
               )}
-              <circle cx={p.x} cy={p.y} r={r} fill={city.primary ? '#CC4400' : 'white'} opacity={fillOp} />
+              <circle cx={p.x} cy={p.y} r={r}
+                fill={city.primary ? '#CC4400' : 'white'} opacity={fOp} />
               <text
-                x={p.x + (city.labelDx ?? 7)}
-                y={p.y + (city.labelDy ?? -4)}
+                x={p.x + (city.lx ?? 7)} y={p.y + (city.ly ?? -4)}
                 fill="white"
                 fontSize={city.primary ? 11 : 9.5}
                 fontFamily="Arial, sans-serif"
                 fontWeight={city.primary ? '700' : '400'}
-                opacity={textOp}
+                opacity={tOp}
               >
                 {city.name}
               </text>
@@ -278,12 +298,12 @@ export default function Hero() {
           );
         })}
 
-        {/* ── BACKGROUND SCATTER DOTS ── */}
+        {/* ── SCATTER DOTS (background depth) ── */}
         {([
-          [175,115,0.12],[305,75,0.09],[115,245,0.12],[425,175,0.09],
-          [75,395,0.11],[195,505,0.09],[345,655,0.11],[115,725,0.09],
-          [475,785,0.10],[600,685,0.09],[645,145,0.09],[550,420,0.08],
-          [445,555,0.08],[275,345,0.09],[380,310,0.08],[560,220,0.08],
+          [175,115,0.11],[305,75,0.09],[115,245,0.11],[75,395,0.10],
+          [195,505,0.09],[345,655,0.10],[475,785,0.09],[600,685,0.08],
+          [645,145,0.09],[550,420,0.07],[445,555,0.08],[275,345,0.09],
+          [380,310,0.07],[560,220,0.08],[230,170,0.08],[490,640,0.07],
         ] as [number,number,number][]).map(([x,y,op],i) => (
           <circle key={i} cx={x} cy={y} r="1.5" fill="white" opacity={op} />
         ))}
@@ -314,16 +334,12 @@ export default function Hero() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href="/dich-vu"
-            className="bg-brand-orange hover:bg-brand-orange-dark text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange-900/30"
-          >
+          <a href="/dich-vu"
+            className="bg-brand-orange hover:bg-brand-orange-dark text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange-900/30">
             Khám Phá Dịch Vụ
           </a>
-          <a
-            href="/lien-he"
-            className="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded-lg font-semibold text-lg backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5"
-          >
+          <a href="/lien-he"
+            className="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded-lg font-semibold text-lg backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5">
             Liên Hệ Ngay
           </a>
         </div>
