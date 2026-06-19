@@ -17,28 +17,31 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      const y = window.scrollY;
+      setScrolled((prev) => {
+        if (!prev && y > 80) return true;
+        if (prev && y < 30) return false;
+        return prev;
+      });
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? 'bg-white shadow-md' : 'bg-white/70 backdrop-blur-sm'
-      }`}
-    >
+    <nav className={`sticky top-0 z-50 bg-white shadow-md transition-all duration-500 ${scrolled ? 'pb-0' : 'pb-2'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className={`flex items-center justify-between transition-all duration-500 ${
-            scrolled ? 'h-16' : 'h-24'
+            scrolled ? 'h-15' : 'h-30'
           }`}
         >
           {/* Logo */}
           <Link
             href="/"
             className={`flex transition-all duration-500 ${
-              scrolled ? 'flex-row items-center gap-3' : 'flex-col items-center gap-1'
+              scrolled ? 'flex-row items-center gap-3' : 'flex-col items-center gap-0'
             }`}
           >
             {/* Icon hình cầu */}
@@ -100,9 +103,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors hover:text-brand-orange ${
-                  scrolled ? 'text-gray-700' : 'text-white'
-                }`}
+                className="text-sm font-medium text-gray-700 transition-colors hover:text-brand-orange"
               >
                 {link.label}
               </Link>
@@ -111,7 +112,7 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <button
-            className={`md:hidden p-2 ${scrolled ? 'text-gray-700' : 'text-white'}`}
+            className="md:hidden p-2 text-gray-700"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Mở menu"
           >
