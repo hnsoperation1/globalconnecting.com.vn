@@ -1,9 +1,9 @@
 const services = [
-  'Tour Du Lịch Trong Nước',
-  'Tour Du Lịch Quốc Tế',
-  'Vé Máy Bay',
-  'Tổ Chức Sự Kiện',
-  'MICE & Doanh Nghiệp',
+  'Tổ Chức Hội Nghị & Hội Thảo',
+  'Gala Dinner & Tiệc Doanh Nghiệp',
+  'Team Building',
+  'MICE & Incentive Trip',
+  'Tour Du Lịch & Vé Máy Bay',
 ];
 
 export default function Footer() {
@@ -20,8 +20,8 @@ export default function Footer() {
               <span className="text-xl font-semibold">Connecting</span>
             </div>
             <p className="text-white/65 text-sm leading-relaxed mb-4">
-              Công ty TNHH Kết Nối Du Lịch Việt Nam Toàn Cầu — đồng hành cùng bạn trên mọi
-              hành trình trong nước và quốc tế.
+              Công ty TNHH Kết Nối Du Lịch Việt Nam Toàn Cầu — chuyên tổ chức sự kiện doanh nghiệp,
+              hội nghị, team building và MICE chuyên nghiệp.
             </p>
             <div className="text-xs text-white/40 space-y-1">
               <div>MST: 0108301813</div>
@@ -54,13 +54,13 @@ export default function Footer() {
                 Số 1 Thái Hà, Phường Đống Đa, TP Hà Nội
               </li>
               <li>
-                <a href="tel:0989257931" className="hover:text-brand-orange transition-colors">
-                  0989 257 931
+                <a href="tel:0968477866" className="hover:text-brand-orange transition-colors">
+                  0968 477 866
                 </a>
               </li>
               <li>
-                <a href="mailto:vgtravel.info@gmail.com" className="hover:text-brand-orange transition-colors">
-                  vgtravel.info@gmail.com
+                <a href="mailto:info@globalconnecting.com.vn" className="hover:text-brand-orange transition-colors">
+                  info@globalconnecting.com.vn
                 </a>
               </li>
             </ul>

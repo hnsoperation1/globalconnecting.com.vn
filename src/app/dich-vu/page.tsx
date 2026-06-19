@@ -5,7 +5,7 @@ import Services from "@/components/Services";
 export const metadata: Metadata = {
   title: "Dịch vụ – Global Connecting",
   description:
-    "Tour du lịch trong nước & quốc tế, vé máy bay, tổ chức sự kiện và giải pháp MICE chuyên nghiệp từ Global Connecting.",
+    "Tổ chức hội nghị, hội thảo, gala dinner, team building, MICE và incentive trip — cùng dịch vụ tour du lịch và vé máy bay từ Global Connecting.",
 };
 
 export default function DichVuPage() {
@@ -14,7 +14,7 @@ export default function DichVuPage() {
       <PageHeader
         breadcrumb="Dịch vụ"
         title="Dịch Vụ Của Chúng Tôi"
-        subtitle="Giải pháp du lịch toàn diện cho cá nhân, doanh nghiệp và tổ chức trên khắp Việt Nam."
+        subtitle="Chuyên tổ chức sự kiện doanh nghiệp chuyên nghiệp — từ hội nghị, team building đến MICE trọn gói."
       />
       <Services />
     </main>

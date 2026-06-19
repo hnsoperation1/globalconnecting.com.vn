@@ -5,6 +5,7 @@ import Link from 'next/link';
 const navLinks = [
   { href: '/', label: 'Trang chủ' },
   { href: '/gioi-thieu', label: 'Giới thiệu' },
+  { href: '/chuong-trinh-da-lam', label: 'Chương trình đã làm' },
   { href: '/dich-vu', label: 'Dịch vụ' },
   { href: '/khach-hang', label: 'Khách hàng' },
   { href: '/lien-he', label: 'Liên hệ' },

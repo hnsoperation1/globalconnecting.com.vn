@@ -16,29 +16,28 @@ export default function About() {
               Về chúng tôi
             </p>
             <h2 className="text-3xl md:text-4xl font-bold text-brand-blue leading-tight mb-6">
-              Kết Nối Du Lịch<br />Việt Nam – Toàn Cầu
+              Đơn Vị Tổ Chức Sự Kiện<br />Uy Tín Tại Hà Nội
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed mb-5">
               Thành lập từ năm <strong>2018</strong>,{' '}
-              <strong>Công ty TNHH Kết Nối Du Lịch Việt Nam Toàn Cầu</strong> (VG TRAVEL) là
-              đơn vị chuyên cung cấp các giải pháp du lịch toàn diện cho cá nhân, doanh nghiệp
-              và tổ chức trên khắp Việt Nam.
+              <strong>Công ty TNHH Kết Nối Du Lịch Việt Nam Toàn Cầu</strong> (VG TRAVEL) chuyên
+              tổ chức sự kiện doanh nghiệp — hội nghị, hội thảo, gala dinner, team building,
+              lễ ra mắt sản phẩm và các chương trình MICE cho doanh nghiệp vừa và lớn.
             </p>
             <p className="text-gray-500 leading-relaxed mb-8">
-              Với đội ngũ chuyên nghiệp, tận tâm và mạng lưới đối tác rộng khắp trong và ngoài
-              nước, chúng tôi cam kết mang đến những chuyến đi trọn vẹn, an toàn và đáng nhớ
-              cho từng khách hàng.
+              Ngoài ra, chúng tôi cũng cung cấp dịch vụ tour du lịch và vé máy bay nhằm đáp ứng
+              nhu cầu di chuyển và incentive trip cho khách hàng doanh nghiệp.
             </p>
 
             {/* Values */}
             <div className="space-y-3 mb-8">
               {[
-                'Tư vấn miễn phí, tận tâm với từng nhu cầu',
-                'Mạng lưới đối tác hàng đầu trong và ngoài nước',
-                'Hỗ trợ 24/7 trong suốt hành trình',
+                'Lên kế hoạch chi tiết, sáng tạo theo yêu cầu từng doanh nghiệp',
+                'Mạng lưới địa điểm và nhà cung cấp sự kiện toàn quốc',
+                'Đội ngũ vận hành chuyên nghiệp, hỗ trợ từ A đến Z',
               ].map((value) => (
                 <div key={value} className="flex items-start gap-3">
-                  <span className="mt-1 w-5 h-5 bg-brand-orange/10 text-brand-orange rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="mt-1 w-5 h-5 bg-brand-orange/10 text-brand-orange rounded-full flex items-center justify-center shrink-0">
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>

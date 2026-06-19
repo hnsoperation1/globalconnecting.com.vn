@@ -1,6 +1,14 @@
+import Image from 'next/image';
+
 const clients = [
-  'Đối tác A', 'Tập đoàn B', 'Công ty C', 'Doanh nghiệp D',
-  'Tổ chức E', 'Công ty F', 'Tập đoàn G', 'Đối tác H',
+  { name: 'Honda',    src: '/client/honda.png'   },
+  { name: 'Canon',    src: '/client/canon.png'   },
+  { name: 'Daikin',   src: '/client/daikin.png'  },
+  { name: 'CMC',      src: '/client/cmc.png'     },
+  { name: 'Hòa Phát', src: '/client/hoaphat.png' },
+  { name: 'Nitori',   src: '/client/nitori.png'  },
+  { name: 'VJCC',     src: '/client/vjcc.png'    },
+  { name: 'TLIP',     src: '/client/tlip.png'    },
 ];
 
 const testimonials = [
@@ -39,14 +47,16 @@ export default function Clients() {
         </div>
 
         {/* Client logo grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20 items-center">
           {clients.map((client) => (
-            <div
-              key={client}
-              className="h-20 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center text-gray-400 font-medium text-sm hover:border-brand-orange/30 hover:text-brand-blue hover:bg-gray-50/80 transition-all duration-200 cursor-default"
-            >
-              {client}
-            </div>
+            <Image
+              key={client.name}
+              src={client.src}
+              alt={client.name}
+              width={200}
+              height={80}
+              className="w-full h-16 object-contain"
+            />
           ))}
         </div>
 

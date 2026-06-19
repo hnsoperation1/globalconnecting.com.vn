@@ -4,16 +4,17 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Global Connecting – Kết Nối Du Lịch Việt Nam Toàn Cầu",
+  title: "Global Connecting – Tổ Chức Sự Kiện Doanh Nghiệp Chuyên Nghiệp",
   description:
-    "Công ty TNHH Kết Nối Du Lịch Việt Nam Toàn Cầu cung cấp dịch vụ tour du lịch, vé máy bay giá tốt, tổ chức sự kiện và giải pháp MICE chuyên nghiệp.",
+    "Công ty TNHH Kết Nối Du Lịch Việt Nam Toàn Cầu — chuyên tổ chức hội nghị, hội thảo, gala dinner, team building, MICE và incentive trip cho doanh nghiệp.",
   keywords: [
-    "tour du lịch",
-    "vé máy bay",
     "tổ chức sự kiện",
+    "tổ chức hội nghị",
+    "team building",
     "MICE",
+    "gala dinner",
     "Global Connecting",
-    "du lịch Việt Nam",
+    "sự kiện doanh nghiệp Hà Nội",
   ],
 };
 
