@@ -1,7 +1,8 @@
 'use client';
 import WordSphere from './WordSphere';
 
-const RINGS = [
+type Ring = { lat: number; startAngle: number; words: string[] };
+const RINGS: Ring[] = [
   { lat:  78, startAngle:   0, words: ['HONDA', 'KYOEI', 'PWC'] },
   { lat:  58, startAngle:  45, words: ['PANASONIC', 'DAIKIN', 'CANON', 'CMC'] },
   { lat:  38, startAngle:   0, words: ['AGRIBANK', 'BIDV', 'HOA PHAT', 'RICHY', 'DASAN'] },
