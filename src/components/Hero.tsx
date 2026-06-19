@@ -1,29 +1,24 @@
-'use client';
-import WordSphere from './WordSphere';
-
-type Ring = { lat: number; startAngle: number; words: string[] };
-const RINGS: Ring[] = [
-  { lat:  78, startAngle:   0, words: ['HONDA', 'KYOEI', 'PWC'] },
-  { lat:  58, startAngle:  45, words: ['PANASONIC', 'DAIKIN', 'CANON', 'CMC'] },
-  { lat:  38, startAngle:   0, words: ['AGRIBANK', 'BIDV', 'HOA PHAT', 'RICHY', 'DASAN'] },
-  { lat:  20, startAngle:  45, words: ['AMACCAO', 'MAPLETREE', 'LANGUAGE LINK', 'DIAMOND FOOD'] },
-  { lat:   0, startAngle:   0, words: ['LX PANTOS', 'INOX HOANG VU', 'PVI INSURANCE', 'HTMP', 'ATI'] },
-  { lat: -20, startAngle:  45, words: ['TRUNG KIEN', 'IDV', 'VINAGO', 'IKKA', 'VITAFINA'] },
-  { lat: -42, startAngle:   0, words: ['VJCC', 'ARISTA', 'TUAN MINH FEED', 'HERON LAKE', 'LANCHI'] },
-  { lat: -68, startAngle:  45, words: ['NITORI', 'VAP', 'DK PHARMA', 'KATOOLEC', 'HALCYON'] },
-];
+import Image from 'next/image';
 
 export default function Hero() {
   return (
-    <section
-      id="home"
-      className="relative min-h-screen flex items-center overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #1E5A8A 0%, #2A75B2 55%, #1E5A8A 100%)' }}
-    >
-      <div className="max-w-7xl mx-auto px-6 w-full flex flex-col lg:flex-row items-center gap-8 py-24">
+    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
 
-        {/* ── LEFT: nội dung ── */}
-        <div className="flex-1 text-center lg:text-left z-10">
+      {/* ── BACKGROUND BANNER ── */}
+      <Image
+        src="/home-banner.png"
+        alt="Global Connecting Banner"
+        fill
+        className="object-cover object-center"
+        priority
+      />
+
+      {/* overlay mờ để chữ dễ đọc */}
+      <div className="absolute inset-0 bg-black/70" />
+
+      {/* ── NỘI DUNG ── */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full py-24">
+        <div className="max-w-2xl">
           <div className="inline-flex items-center gap-2 bg-white/10 text-white/90 text-sm px-4 py-2 rounded-full mb-8 backdrop-blur-sm border border-white/20">
             <span className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
             Công ty TNHH Kết Nối Du Lịch Việt Nam Toàn Cầu
@@ -35,15 +30,15 @@ export default function Hero() {
             <span className="text-brand-orange">Chuyên Nghiệp</span>
           </h1>
 
-          <p className="text-lg md:text-xl text-white/75 mb-10 max-w-xl leading-relaxed">
+          <p className="text-lg md:text-xl text-white/80 mb-10 max-w-xl leading-relaxed">
             Hội nghị, hội thảo, gala dinner, team building — chúng tôi lên kế hoạch
             và thực hiện trọn vẹn mọi quy mô sự kiện cho doanh nghiệp của bạn.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          <div className="flex flex-col sm:flex-row gap-4">
             <a
               href="/dich-vu"
-              className="bg-brand-orange hover:bg-brand-orange-dark text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange-900/30"
+              className="bg-brand-orange hover:bg-brand-orange-dark text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
             >
               Xem Dịch Vụ
             </a>
@@ -55,7 +50,7 @@ export default function Hero() {
             </a>
           </div>
 
-          <div className="grid grid-cols-3 gap-6 mt-16 pt-8 border-t border-white/15">
+          <div className="grid grid-cols-3 gap-6 mt-16 pt-8 border-t border-white/20">
             <div>
               <div className="text-3xl md:text-4xl font-bold text-brand-orange">6+</div>
               <div className="text-white/60 text-sm mt-1">Năm kinh nghiệm</div>
@@ -70,27 +65,10 @@ export default function Hero() {
             </div>
           </div>
         </div>
-
-        {/* ── RIGHT: WordSphere ── */}
-        <div className="flex-1 flex justify-center items-center">
-          <WordSphere
-            rings={RINGS}
-            size={520}
-            radius={215}
-            bgColor="transparent"
-            textColor="#EF7E22"
-            fontSize={18}
-            fontWeight={900}
-            autoSpinSpeed={0.09}
-            letterGap={3}
-            style={{ padding: 0, borderRadius: 0, overflow: 'visible' }}
-          />
-        </div>
-
       </div>
 
       {/* scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-10">
         <svg className="w-6 h-6 text-white/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
