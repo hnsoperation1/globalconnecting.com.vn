@@ -50,12 +50,6 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <a
-              href="https://ticket.globalconnecting.com.vn"
-              className="bg-brand-orange text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-brand-orange-dark transition-colors"
-            >
-              Trang bán vé »
-            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -89,15 +83,6 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <div className="px-4 pt-3">
-              <a
-                href="https://ticket.globalconnecting.com.vn"
-                className="block bg-brand-orange text-white px-4 py-2.5 rounded-md text-center text-sm font-semibold"
-                onClick={() => setMenuOpen(false)}
-              >
-                Trang bán vé »
-              </a>
-            </div>
           </div>
         )}
       </div>
