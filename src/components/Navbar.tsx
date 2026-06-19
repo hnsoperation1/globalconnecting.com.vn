@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const navLinks = [
   { href: '/', label: 'Trang chủ' },
@@ -23,18 +24,74 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled ? 'bg-white shadow-md' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div
+          className={`flex items-center justify-between transition-all duration-500 ${
+            scrolled ? 'h-16' : 'h-24'
+          }`}
+        >
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-1">
-            <span className="text-2xl font-bold text-brand-orange">Global</span>
-            <span className={`text-xl font-semibold ${scrolled ? 'text-brand-blue' : 'text-white'}`}>
-              Connecting
-            </span>
+          <Link
+            href="/"
+            className={`flex transition-all duration-500 ${
+              scrolled ? 'flex-row items-center gap-3' : 'flex-col items-center gap-1'
+            }`}
+          >
+            {/* Icon hình cầu */}
+            <div
+              className={`relative shrink-0 transition-all duration-500 ${
+                scrolled ? 'w-10 h-10' : 'w-14 h-14'
+              }`}
+            >
+              <Image
+                src="/logo.png"
+                alt="Global Connecting logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+
+            {/* Chữ: ban đầu bên dưới icon (stacked), sau scroll sang bên phải */}
+            <div className="flex flex-col items-center">
+              <div className="flex gap-1">
+                <span
+                  className={`font-extrabold leading-none transition-all duration-500 ${
+                    scrolled ? 'text-xl' : 'text-2xl'
+                  } text-[#1a3a5c]`}
+                >
+                  GLOBAL
+                </span>
+                <span
+                  className={`font-extrabold leading-none transition-all duration-500 ${
+                    scrolled ? 'text-xl' : 'text-2xl'
+                  } text-brand-orange`}
+                >
+                  CONNECTING
+                </span>
+              </div>
+
+              {/* Tagline ẩn sau khi scroll */}
+              <span
+                style={{
+                  fontSize: scrolled ? '0px' : '7px',
+                  maxHeight: scrolled ? '0' : '20px',
+                  opacity: scrolled ? 0 : 1,
+                  overflow: 'hidden',
+                  transition: 'all 0.4s ease',
+                  letterSpacing: '0.12em',
+                  color: '#1a3a5c',
+                  fontWeight: 600,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                BRING THE WORLD CLOSER TO YOU
+              </span>
+            </div>
           </Link>
 
           {/* Desktop nav */}

@@ -1,3 +1,6 @@
+import Image from 'next/image';
+import Link from 'next/link';
+
 const services = [
   'Tổ Chức Hội Nghị & Hội Thảo',
   'Gala Dinner & Tiệc Doanh Nghiệp',
@@ -10,15 +13,31 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-brand-blue text-white">
+    <footer className="bg-[#071428] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid md:grid-cols-3 gap-10 mb-10">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-1 mb-3">
-              <span className="text-2xl font-bold text-brand-orange">Global</span>
-              <span className="text-xl font-semibold">Connecting</span>
-            </div>
+            {/* Logo chuẩn: icon + chữ bên dưới */}
+            <Link href="/" className="inline-flex flex-col items-center gap-1 mb-4">
+              <div className="relative w-16 h-16">
+                <Image
+                  src="/logo.png"
+                  alt="Global Connecting logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="flex gap-1">
+                  <span className="text-xl font-extrabold text-white leading-none">GLOBAL</span>
+                  <span className="text-xl font-extrabold text-brand-orange leading-none">CONNECTING</span>
+                </div>
+                <span className="text-[7px] font-semibold tracking-widest text-white/70 uppercase mt-0.5 whitespace-nowrap">
+                  BRING THE WORLD CLOSER TO YOU
+                </span>
+              </div>
+            </Link>
             <p className="text-white/65 text-sm leading-relaxed mb-4">
               Công ty TNHH Kết Nối Du Lịch Việt Nam Toàn Cầu — chuyên tổ chức sự kiện doanh nghiệp,
               hội nghị, team building và MICE chuyên nghiệp.

@@ -50,18 +50,22 @@ export default function Hero() {
             </a>
           </div>
 
-          <div className="grid grid-cols-3 gap-6 mt-16 pt-8 border-t border-white/20">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-16 pt-8 border-t border-white/20">
             <div>
-              <div className="text-3xl md:text-4xl font-bold text-brand-orange">6+</div>
-              <div className="text-white/60 text-sm mt-1">Năm kinh nghiệm</div>
+              <div className="text-3xl md:text-4xl font-bold text-brand-orange">20+</div>
+              <div className="text-white/60 text-sm mt-1">BQL với hơn 20 năm kinh nghiệm</div>
             </div>
             <div>
-              <div className="text-3xl md:text-4xl font-bold text-brand-orange">200+</div>
-              <div className="text-white/60 text-sm mt-1">Sự kiện đã thực hiện</div>
+              <div className="text-3xl md:text-4xl font-bold text-brand-orange">10</div>
+              <div className="text-white/60 text-sm mt-1">Năm hoạt động</div>
             </div>
             <div>
               <div className="text-3xl md:text-4xl font-bold text-brand-orange">500+</div>
               <div className="text-white/60 text-sm mt-1">Khách hàng tin tưởng</div>
+            </div>
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-brand-orange">500+</div>
+              <div className="text-white/60 text-sm mt-1">Chương trình sự kiện & team building mỗi năm</div>
             </div>
           </div>
         </div>
