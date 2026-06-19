@@ -51,7 +51,10 @@ export default function Footer() {
             <h4 className="font-semibold mb-4 text-white/90">Liên hệ</h4>
             <ul className="space-y-3 text-sm text-white/60">
               <li className="leading-relaxed">
-                Số 1 Thái Hà, Phường Đống Đa, TP Hà Nội
+                <span className="font-medium text-white/75">Hà Nội:</span> Số 1 Thái Hà, Phường Đống Đa
+              </li>
+              <li className="leading-relaxed">
+                <span className="font-medium text-white/75">TP HCM:</span> Số 7-9 Nguyễn Bỉnh Khiêm, Phường Sài Gòn
               </li>
               <li>
                 <a href="tel:0968477866" className="hover:text-brand-orange transition-colors">

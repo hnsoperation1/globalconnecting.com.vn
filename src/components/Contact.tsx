@@ -4,7 +4,7 @@ import { useState } from 'react';
 const contactInfo = [
   {
     label: 'Địa chỉ',
-    value: 'Số 1 Thái Hà, Phường Đống Đa, TP Hà Nội',
+    value: 'Hà Nội: Số 1 Thái Hà, Phường Đống Đa\nTP HCM: Số 7-9 Nguyễn Bỉnh Khiêm, Phường Sài Gòn',
     href: undefined,
     iconPath:
       'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z',
@@ -74,7 +74,7 @@ export default function Contact() {
                           {info.value}
                         </a>
                       ) : (
-                        <div className="text-gray-700 text-sm">{info.value}</div>
+                        <div className="text-gray-700 text-sm whitespace-pre-line">{info.value}</div>
                       )}
                     </div>
                   </div>
