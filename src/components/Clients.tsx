@@ -47,15 +47,15 @@ export default function Clients() {
         </div>
 
         {/* Client logo grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20 items-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-20 items-center">
           {clients.map((client) => (
             <Image
               key={client.name}
               src={client.src}
               alt={client.name}
-              width={200}
-              height={80}
-              className="w-full h-16 object-contain"
+              width={300}
+              height={120}
+              className="w-full h-24 object-contain"
             />
           ))}
         </div>

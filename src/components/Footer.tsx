@@ -38,13 +38,9 @@ export default function Footer() {
                 </span>
               </div>
             </Link>
-            <p className="text-white/65 text-sm leading-relaxed mb-4">
-              Công ty TNHH Kết Nối Du Lịch Việt Nam Toàn Cầu — chuyên tổ chức sự kiện doanh nghiệp,
-              hội nghị, team building và MICE chuyên nghiệp.
-            </p>
-            <div className="text-xs text-white/40 space-y-1">
-              <div>MST: 0108301813</div>
-              <div>Thành lập: 31/05/2018</div>
+            <div className="mt-3 space-y-2">
+              <p className="text-sm font-medium text-white/80">Công ty TNHH Kết Nối Du Lịch Việt Nam Toàn Cầu</p>
+              <p className="text-xs text-white/55 leading-relaxed">Chuyên tổ chức sự kiện doanh nghiệp, hội nghị, team building và MICE chuyên nghiệp.</p>
             </div>
           </div>
 
@@ -85,15 +81,20 @@ export default function Footer() {
                   info@globalconnecting.com.vn
                 </a>
               </li>
+              <li>
+                <a href="https://globalconnecting.com.vn" className="hover:text-brand-orange transition-colors">
+                  globalconnecting.com.vn
+                </a>
+              </li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/40">
           <p>© {year} VG TRAVEL – Công ty TNHH Kết Nối Du Lịch Việt Nam Toàn Cầu. All rights reserved.</p>
-          <p>globalconnecting.com.vn</p>
         </div>
       </div>
     </footer>
+
   );
 }

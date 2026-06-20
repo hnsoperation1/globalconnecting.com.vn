@@ -84,9 +84,6 @@ export default function Services() {
 
         {/* ── Dịch vụ bổ sung ── */}
         <div className="mb-3">
-          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
-            Dịch vụ bổ sung
-          </p>
           <div className="grid md:grid-cols-2 gap-5">
             {sideServices.map((s) => (
               <div key={s.title}
