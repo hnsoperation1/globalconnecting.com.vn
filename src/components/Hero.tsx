@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 
 const slides = [
@@ -68,17 +69,17 @@ export default function Hero() {
 
           <div className="flex flex-col sm:flex-row gap-4">
             <a
-              href="/dich-vu"
-              className="bg-brand-orange hover:bg-brand-orange-dark text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
-            >
-              Xem Dịch Vụ
-            </a>
-            <a
               href="/lien-he"
-              className="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded-lg font-semibold text-lg backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5"
+              className="bg-brand-orange hover:bg-brand-orange-dark text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
             >
               Liên Hệ Ngay
             </a>
+            <Link
+              href="/chuong-trinh-da-lam"
+              className="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded-lg font-semibold text-lg backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5"
+            >
+              Xem sự kiện do chúng tôi thực hiện
+            </Link>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-16 pt-8 border-t border-white/20">

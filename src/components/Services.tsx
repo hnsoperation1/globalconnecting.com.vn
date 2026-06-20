@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 const eventItems = [
   'Hội nghị & Hội thảo doanh nghiệp',
   'Gala Dinner & Tiệc kỷ niệm',
@@ -34,44 +36,51 @@ const sideServices = [
 
 export default function Services() {
   return (
-    <section id="services" className="py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <>
+      {/* ── Section 1: 2 cột ── */}
+      <section id="services" className="bg-gray-50 overflow-hidden">
+        <div className="lg:grid lg:grid-cols-2 min-h-120">
 
-        {/* Header */}
-        <div className="text-center mb-14">
-          <p className="text-brand-orange font-semibold text-sm uppercase tracking-widest mb-3">
-            Dịch vụ của chúng tôi
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-brand-blue mb-4">
-            Chuyên Gia Tổ Chức Sự Kiện
-          </h2>
-          <p className="text-gray-500 max-w-2xl mx-auto">
-            Từ quy mô nhỏ đến hàng nghìn người — chúng tôi thiết kế, lên kế hoạch
-            và vận hành sự kiện doanh nghiệp một cách chuyên nghiệp, sáng tạo và trọn vẹn.
-          </p>
-        </div>
-
-        {/* ── Sự kiện: card nổi bật ── */}
-        <div
-          className="rounded-2xl p-8 md:p-10 mb-8"
-          style={{ background: 'linear-gradient(135deg, #1E5A8A 0%, #2A75B2 100%)' }}
-        >
-          <div className="flex flex-col lg:flex-row gap-8 items-start">
-            {/* Icon + title */}
-            <div className="shrink-0">
-              <div className="w-16 h-16 bg-white/15 rounded-2xl flex items-center justify-center text-white mb-4">
-                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
+          {/* Cột trái: background image + CTA giữa */}
+          <div
+            className="relative flex items-center justify-center min-h-80 lg:min-h-0"
+            style={{
+              backgroundImage: 'url(/bg02.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            <div className="relative z-10 text-center px-10">
+              <div className="inline-block bg-black/60 rounded-lg px-5 py-3 mb-5">
+                <p className="text-white font-semibold text-lg leading-snug">Bạn đang lên kế hoạch cho sự kiện?</p>
+                <p className="text-white/80 text-sm mt-1">Liên hệ ngay để được tư vấn miễn phí và nhận báo giá chi tiết.</p>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2">Tổ Chức Sự Kiện</h3>
-              <p className="text-white/70 text-sm max-w-xs leading-relaxed">
-                Dịch vụ cốt lõi — chúng tôi đồng hành từ ý tưởng đến khi sự kiện kết thúc.
-              </p>
+              <br />
+              <a
+                href="#contact"
+                className="inline-block bg-brand-orange hover:bg-brand-orange-dark text-white font-semibold px-7 py-3 rounded-lg transition-colors"
+              >
+                Nhận báo giá ngay
+              </a>
             </div>
-            {/* Items grid */}
-            <div className="grid sm:grid-cols-2 gap-3 flex-1">
+          </div>
+
+          {/* Cột phải: blue services card */}
+          <div
+            className="p-8 md:p-10 flex flex-col justify-center"
+            style={{ background: 'linear-gradient(135deg, #1E5A8A 0%, #2A75B2 100%)' }}
+          >
+            <p className="text-brand-orange font-semibold text-xs uppercase tracking-widest mb-3">
+              Dịch vụ của chúng tôi
+            </p>
+            <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">Tổ Chức Sự Kiện</h3>
+            <p className="text-white/70 text-sm mb-2 leading-relaxed">
+              Dịch vụ cốt lõi — chúng tôi đồng hành từ ý tưởng đến khi sự kiện kết thúc.
+            </p>
+            <p className="text-white/60 text-sm mb-6 leading-relaxed">
+              Từ quy mô nhỏ đến hàng nghìn người — chúng tôi thiết kế, lên kế hoạch và vận hành sự kiện doanh nghiệp một cách chuyên nghiệp, sáng tạo và trọn vẹn.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-3">
               {eventItems.map((item) => (
                 <div key={item} className="flex items-center gap-3 bg-white/10 rounded-xl px-4 py-3">
                   <span className="w-2 h-2 bg-brand-orange rounded-full shrink-0" />
@@ -80,10 +89,13 @@ export default function Services() {
               ))}
             </div>
           </div>
-        </div>
 
-        {/* ── Dịch vụ bổ sung ── */}
-        <div className="mb-3">
+        </div>
+      </section>
+
+      {/* ── Section 2: Tour & Vé máy bay ── */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-5">
             {sideServices.map((s) => (
               <div key={s.title}
@@ -100,25 +112,7 @@ export default function Services() {
             ))}
           </div>
         </div>
-
-        {/* CTA */}
-        <div
-          className="mt-10 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6"
-          style={{ background: 'linear-gradient(135deg, #2A75B2, #EF7E22)' }}
-        >
-          <div>
-            <h3 className="text-xl font-bold text-white mb-1">Bạn đang lên kế hoạch cho sự kiện?</h3>
-            <p className="text-white/75 text-sm">Liên hệ ngay để được tư vấn miễn phí và nhận báo giá chi tiết.</p>
-          </div>
-          <a
-            href="#contact"
-            className="shrink-0 bg-white text-brand-blue font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors"
-          >
-            Nhận báo giá
-          </a>
-        </div>
-
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
