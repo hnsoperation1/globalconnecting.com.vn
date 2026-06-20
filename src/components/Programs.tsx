@@ -75,15 +75,18 @@ const ArticleBadge = () => (
 
 function TallCard({ p, isEven, isDark }: { p: Card; isEven: boolean; isDark: boolean }) {
   return (
-    <div className={`rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col md:flex-row ${isDark ? 'bg-[#0a1f3d]' : 'bg-white border border-gray-100'}`}>
+    <div className={`rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col md:flex-row relative ${isDark ? 'bg-[#0a1f3d]' : 'bg-white'}`}>
+      <div className={`absolute bottom-0 left-0 right-0 h-1 z-10 ${isDark ? 'bg-brand-orange' : 'bg-brand-blue'}`} />
+      {/* Image */}
       <div className={`relative w-full md:w-2/5 shrink-0 ${isEven ? 'md:order-1' : 'md:order-2'}`}>
         <div className="h-56 md:h-full min-h-55 relative">
           <Image src={p.image} alt={p.title} fill className="object-cover" />
-          <div className={`absolute inset-0 ${isEven
-            ? `bg-linear-to-r from-transparent ${isDark ? 'to-brand-blue/30' : 'to-white/20'}`
-            : `bg-linear-to-l from-transparent ${isDark ? 'to-brand-blue/30' : 'to-white/20'}`}`} />
+          {isDark && (
+            <div className={`absolute inset-0 ${isEven ? 'bg-linear-to-r' : 'bg-linear-to-l'} from-transparent to-brand-blue/30`} />
+          )}
         </div>
       </div>
+      {/* Content */}
       <div className={`flex flex-col justify-center p-8 flex-1 ${isEven ? 'md:order-2' : 'md:order-1'}`}>
         <div className="flex items-center gap-2 mb-4 flex-wrap">
           {p.isVenue ? <ArticleBadge /> : <OrganizerBadge />}
@@ -92,8 +95,8 @@ function TallCard({ p, isEven, isDark }: { p: Card; isEven: boolean; isDark: boo
         </div>
         <p className="text-xs font-bold text-brand-orange uppercase tracking-widest mb-2">{p.label}</p>
         <h3 className={`text-xl md:text-2xl font-bold mb-3 leading-snug ${isDark ? 'text-white' : 'text-gray-900'}`}>{p.title}</h3>
-        <p className={`text-sm leading-relaxed mb-6 line-clamp-3 ${isDark ? 'text-white/90' : 'text-gray-700'}`}>
-          <span className="font-bold text-brand-blue" style={isDark ? { color: '#93c5fd' } : {}}>Global</span>{' '}
+        <p className={`text-sm leading-relaxed mb-6 line-clamp-3 ${isDark ? 'text-white/90' : 'text-gray-600'}`}>
+          <span className="font-bold" style={{ color: isDark ? '#93c5fd' : '#1E5A8A' }}>Global</span>{' '}
           <span className="font-bold text-brand-orange">Connecting</span>{' '}
           vinh dự được <span className="font-semibold">{p.label}</span> tin tưởng giao phó tổ chức — {p.desc}
         </p>
@@ -118,7 +121,7 @@ function TallCard({ p, isEven, isDark }: { p: Card; isEven: boolean; isDark: boo
 
 function ShortCard({ p }: { p: Card }) {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col">
+    <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col relative">
       <div className="relative h-44 shrink-0">
         <Image src={p.image} alt={p.title} fill className="object-cover" />
       </div>
@@ -137,6 +140,10 @@ function ShortCard({ p }: { p: Card }) {
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </Link>
         </div>
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 flex h-1">
+        <div className="flex-1 bg-brand-orange" />
+        <div className="flex-1 bg-brand-blue" />
       </div>
     </div>
   );
