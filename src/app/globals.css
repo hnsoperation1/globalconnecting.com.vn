@@ -9,6 +9,11 @@
   --color-brand-blue-light: #3A8FCC;
 }
 
+@keyframes pill-touch {
+  0%, 100% { background-color: #F29340; box-shadow: 0 0 10px #EF7E2288; }
+  50%       { background-color: #EF7E22; box-shadow: none; }
+}
+
 html {
   scroll-behavior: smooth;
 }

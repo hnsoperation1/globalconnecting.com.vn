@@ -3,9 +3,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import events, { getEventBySlug } from '@/data/events';
+import { venues, getVenueBySlug } from '@/data/venues';
 
 export function generateStaticParams() {
-  return events.map((e) => ({ slug: e.slug }));
+  return [
+    ...events.map((e) => ({ slug: e.slug })),
+    ...venues.map((v) => ({ slug: v.slug })),
+  ];
 }
 
 export async function generateMetadata(
@@ -13,17 +17,128 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params;
   const event = getEventBySlug(slug);
-  if (!event) return {};
-  return {
+  if (event) return {
     title: `${event.title} – ${event.client} | Global Connecting`,
     description: event.intro.slice(0, 160),
   };
+  const venue = getVenueBySlug(slug);
+  if (venue) return {
+    title: `${venue.name} – Địa điểm sự kiện | Global Connecting`,
+    description: venue.intro.slice(0, 160),
+  };
+  return {};
+}
+
+function renderVenueBody(body: string) {
+  const lines = body.split('\n');
+  const elements: React.ReactNode[] = [];
+  let key = 0;
+  let inList = false;
+
+  for (const line of lines) {
+    if (line.startsWith('## ')) {
+      if (inList) { elements.push(<div key={`end-${key++}`} />); inList = false; }
+      elements.push(
+        <h2 key={key++} className="text-xl font-bold text-brand-blue mt-10 mb-4">{line.replace('## ', '')}</h2>
+      );
+    } else if (line.startsWith('- ')) {
+      const content = line.replace('- ', '');
+      const boldMatch = content.match(/^\*\*(.+?)\*\*[：:]\s*(.+)/);
+      elements.push(
+        <li key={key++} className="mb-2 text-gray-600">
+          {boldMatch
+            ? <><span className="font-semibold text-gray-800">{boldMatch[1]}:</span> {boldMatch[2]}</>
+            : content}
+        </li>
+      );
+      inList = true;
+    } else if (line.trim() === '') {
+      if (inList) { inList = false; }
+      elements.push(<div key={key++} className="h-2" />);
+    } else {
+      elements.push(<p key={key++} className="text-gray-600 leading-relaxed mb-4">{line}</p>);
+    }
+  }
+  return elements;
 }
 
 export default async function EventDetailPage(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
+
+  /* ── BÀI VIẾT ĐỊA ĐIỂM ── */
+  const venue = getVenueBySlug(slug);
+  if (venue) {
+    return (
+      <main className="bg-white">
+        <div className="relative h-72 md:h-105 w-full overflow-hidden">
+          <Image src={venue.coverImage} alt={venue.name} fill priority className="object-cover object-center" />
+          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 flex flex-col justify-end max-w-4xl mx-auto px-6 pb-10">
+            <span className="text-xs font-semibold text-brand-orange uppercase tracking-widest mb-2">
+              Bài viết · {venue.category}
+            </span>
+            <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight mb-2">{venue.name}</h1>
+            <p className="text-white/70 text-sm flex items-center gap-1.5">
+              <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              {venue.address}
+            </p>
+          </div>
+        </div>
+
+        <div className="max-w-4xl mx-auto px-6 py-12">
+          <nav className="text-xs text-gray-400 mb-10 flex items-center gap-1.5">
+            <Link href="/" className="hover:text-brand-orange transition-colors">Trang chủ</Link>
+            <span>/</span>
+            <Link href="/chuong-trinh-da-lam" className="hover:text-brand-orange transition-colors">Chương trình đã làm</Link>
+            <span>/</span>
+            <span className="text-gray-700">{venue.name}</span>
+          </nav>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10 p-6 bg-gray-50 rounded-2xl">
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">Sức chứa</p>
+              <p className="font-bold text-gray-800">{venue.capacity}</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">Loại hình</p>
+              <p className="font-bold text-gray-800">{venue.category}</p>
+            </div>
+            <div className="col-span-2 md:col-span-1">
+              <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">Điểm nổi bật</p>
+              <p className="font-bold text-gray-800 text-sm">{venue.highlight}</p>
+            </div>
+          </div>
+
+          <p className="text-lg text-gray-700 leading-relaxed mb-10 border-l-4 border-brand-orange pl-5 italic">
+            {venue.intro}
+          </p>
+
+          <ul className="list-none pl-0 space-y-0">{renderVenueBody(venue.body)}</ul>
+
+          <div className="flex flex-wrap gap-2 mt-12 pt-8 border-t border-gray-100">
+            {venue.tags.map((tag) => (
+              <span key={tag} className="text-xs bg-gray-100 text-gray-500 px-3 py-1 rounded-full">#{tag}</span>
+            ))}
+          </div>
+
+          <div className="mt-12 p-8 rounded-2xl text-center"
+            style={{ background: 'linear-gradient(135deg, #1E5A8A, #EF7E22)' }}>
+            <p className="text-white font-bold text-lg mb-2">Cần tư vấn tổ chức sự kiện tại {venue.shortName}?</p>
+            <p className="text-white/75 text-sm mb-5">Liên hệ để được hỗ trợ lên kế hoạch và báo giá miễn phí.</p>
+            <Link href="/lien-he" className="inline-flex items-center gap-2 bg-white text-brand-blue font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors">
+              Liên hệ tư vấn miễn phí
+            </Link>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  /* ── SỰ KIỆN ── */
   const event = getEventBySlug(slug);
   if (!event) notFound();
 

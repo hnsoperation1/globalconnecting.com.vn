@@ -2,17 +2,19 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 const navLinks = [
   { href: '/', label: 'Trang chủ' },
   { href: '/gioi-thieu', label: 'Giới thiệu' },
-  { href: '/chuong-trinh-da-lam', label: 'Chương trình đã làm' },
+  { href: '/chuong-trinh-da-lam', label: 'Chương trình đã làm', highlight: true },
   { href: '/dich-vu', label: 'Dịch vụ' },
   { href: '/khach-hang', label: 'Khách hàng' },
   { href: '/lien-he', label: 'Liên hệ' },
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -99,15 +101,29 @@ export default function Navbar() {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-gray-700 transition-colors hover:text-brand-orange"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) =>
+              link.highlight ? (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="relative text-sm font-bold text-white px-4 py-1.5 rounded-full shadow-sm"
+                  style={pathname !== link.href ? { animation: 'pill-touch 1s ease-in-out infinite' } : { backgroundColor: '#EF7E22' }}
+                >
+                  {pathname !== link.href && (
+                    <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-base animate-bounce select-none leading-none">👆</span>
+                  )}
+                  {link.label}
+                </Link>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm font-medium text-gray-700 transition-colors hover:text-brand-orange"
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
           </div>
 
           {/* Mobile menu button */}

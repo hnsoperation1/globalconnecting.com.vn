@@ -1,17 +1,141 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { venues } from '@/data/venues';
 
-const programs = Array.from({ length: 10 }, (_, i) => ({
+type Card = {
+  slug: string;
+  category: string;
+  label: string;
+  title: string;
+  date: string;
+  meta: { icon: 'location' | 'people'; text: string }[];
+  desc: string;
+  image: string;
+  isVenue: boolean;
+};
+
+const eventPrograms: Card[] = Array.from({ length: 10 }, (_, i) => ({
   slug: 'light-up-the-future',
   category: 'CSR & Sự kiện cộng đồng',
-  client: 'Panasonic Việt Nam',
+  label: 'Panasonic Việt Nam',
   title: 'Light Up The Future',
   date: '11–12/03/2026',
-  location: 'Quảng Trị',
-  guests: '510 hộ gia đình',
+  meta: [
+    { icon: 'location', text: 'Quảng Trị' },
+    { icon: 'people', text: '510 hộ gia đình' },
+  ],
   desc: 'Trao tặng 510 đèn năng lượng mặt trời cho hai xã biên giới Tà Rụt và Hướng Lập, kết hợp lớp học STEM và các hoạt động cộng đồng ý nghĩa.',
   image: '/events/light-up-the-future/1.jpg',
+  isVenue: false,
 }));
+
+const venueCards: Card[] = venues.map((v) => ({
+  slug: v.slug,
+  category: v.category,
+  label: v.capacity,
+  title: v.name,
+  date: '',
+  meta: [{ icon: 'location', text: v.address }],
+  desc: v.intro,
+  image: v.coverImage,
+  isVenue: true,
+}));
+
+const MAX = 50;
+const displayEvents = eventPrograms.slice(0, MAX);
+const displayVenues = venueCards.slice(0, MAX);
+const groupCount = Math.max(Math.ceil(displayEvents.length / 2), Math.ceil(displayVenues.length / 2));
+
+const LocationIcon = () => (
+  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+);
+const PeopleIcon = () => (
+  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+);
+
+const OrganizerBadge = () => (
+  <span className="inline-flex items-center gap-1 bg-white border border-gray-200 px-2.5 py-1.5 rounded-full whitespace-nowrap shadow-sm">
+    <Image src="/logo.png" alt="" width={14} height={14} className="object-contain shrink-0" />
+    <span className="text-[10px] font-extrabold leading-none text-[#1a3a5c]">GLOBAL</span>
+    <span className="text-[10px] font-extrabold leading-none text-brand-orange">CONNECTING</span>
+    <span className="text-[10px] font-medium leading-none text-gray-400">tổ chức</span>
+  </span>
+);
+
+const ArticleBadge = () => (
+  <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-gray-200 text-gray-600 px-2.5 py-0.5 rounded-full">
+    Bài viết
+  </span>
+);
+
+function TallCard({ p, isEven }: { p: Card; isEven: boolean }) {
+  return (
+    <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col md:flex-row">
+      <div className={`relative w-full md:w-2/5 shrink-0 ${isEven ? 'md:order-1' : 'md:order-2'}`}>
+        <div className="h-56 md:h-full min-h-55 relative">
+          <Image src={p.image} alt={p.title} fill className="object-cover" />
+          <div className={`absolute inset-0 ${isEven ? 'bg-linear-to-r from-transparent to-white/20' : 'bg-linear-to-l from-transparent to-white/20'}`} />
+        </div>
+      </div>
+      <div className={`flex flex-col justify-center p-8 flex-1 ${isEven ? 'md:order-2' : 'md:order-1'}`}>
+        <div className="flex items-center gap-2 mb-4 flex-wrap">
+          {p.isVenue ? <ArticleBadge /> : <OrganizerBadge />}
+          <span className="text-xs font-semibold bg-brand-blue/10 text-brand-blue px-3 py-1 rounded-full">{p.category}</span>
+          {!p.isVenue && <span className="text-xs text-gray-400">{p.date}</span>}
+        </div>
+        <p className="text-xs font-bold text-brand-orange uppercase tracking-widest mb-2">{p.label}</p>
+        <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 leading-snug">{p.title}</h3>
+        <p className="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-3">
+          <span className="font-bold text-brand-blue">Global</span> <span className="font-bold text-brand-orange">Connecting</span> vinh dự được <span className="font-semibold">{p.label}</span> tin tưởng giao phó tổ chức — {p.desc}
+        </p>
+        <div className="flex flex-wrap gap-5 text-sm text-gray-400 mb-6">
+          {p.meta.map((m, i) => (
+            <span key={i} className="flex items-center gap-1.5">
+              {m.icon === 'location' ? <LocationIcon /> : <PeopleIcon />}
+              {m.text}
+            </span>
+          ))}
+        </div>
+        <div>
+          <Link href={`/chuong-trinh-da-lam/${p.slug}`} className="inline-flex items-center gap-2 bg-brand-blue hover:bg-brand-blue-dark text-white text-sm font-semibold px-6 py-3 rounded-lg transition-colors">
+            {p.isVenue ? 'Đọc bài viết' : 'Xem chi tiết'}
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ShortCard({ p }: { p: Card }) {
+  return (
+    <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col">
+      <div className="relative h-44 shrink-0">
+        <Image src={p.image} alt={p.title} fill className="object-cover" />
+      </div>
+      <div className="flex flex-col flex-1 p-5">
+        <div className="flex items-center gap-2 mb-2 flex-wrap">
+          {p.isVenue ? <ArticleBadge /> : <OrganizerBadge />}
+          <span className="text-xs font-semibold bg-brand-blue/10 text-brand-blue px-2.5 py-0.5 rounded-full">{p.category}</span>
+          {!p.isVenue && <span className="text-xs text-gray-400">{p.date}</span>}
+        </div>
+        <p className="text-xs font-bold text-brand-orange uppercase tracking-widest mb-1">{p.label}</p>
+        <h3 className="text-base font-bold text-gray-900 mb-2 leading-snug">{p.title}</h3>
+        <p className="text-gray-500 text-xs leading-relaxed mb-4 line-clamp-2">{p.desc}</p>
+        <div className="mt-auto">
+          <Link href={`/chuong-trinh-da-lam/${p.slug}`} className="inline-flex items-center gap-1.5 text-brand-blue hover:text-brand-blue-dark text-sm font-semibold transition-colors">
+            {p.isVenue ? 'Đọc bài viết' : 'Xem chi tiết'}
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Programs() {
   return (
@@ -21,7 +145,7 @@ export default function Programs() {
         {/* Header */}
         <div className="text-center mb-16">
           <p className="text-brand-orange font-semibold text-sm uppercase tracking-widest mb-3">
-            Thực tế đã làm
+            Dấu ấn của chúng tôi
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-brand-blue mb-4">
             Các Chương Trình Tiêu Biểu
@@ -32,85 +156,21 @@ export default function Programs() {
           </p>
         </div>
 
-        {/* Alternating list */}
+        {/* Card list: cứ 2 tall (sự kiện cty) + 2 short (bài viết) */}
         <div className="space-y-8">
-          {programs.map((p, i) => {
-            const isEven = i % 2 === 0;
+          {Array.from({ length: groupCount }).map((_, gi) => {
+            const tall = displayEvents.slice(gi * 2, gi * 2 + 2);
+            const short = displayVenues.slice(gi * 2, gi * 2 + 2);
             return (
-              <div
-                key={i}
-                className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col md:flex-row"
-              >
-                {/* Image */}
-                <div className={`relative w-full md:w-2/5 shrink-0 ${isEven ? 'md:order-1' : 'md:order-2'}`}>
-                  <div className="h-56 md:h-full min-h-55 relative">
-                    <Image
-                      src={p.image}
-                      alt={p.title}
-                      fill
-                      className="object-cover"
-                    />
-                    {/* Gradient overlay */}
-                    <div className={`absolute inset-0 ${
-                      isEven
-                        ? 'bg-linear-to-r from-transparent to-white/20'
-                        : 'bg-linear-to-l from-transparent to-white/20'
-                    }`} />
+              <div key={gi} className="space-y-8">
+                {tall.map((p, ti) => (
+                  <TallCard key={ti} p={p} isEven={(gi * 2 + ti) % 2 === 0} />
+                ))}
+                {short.length > 0 && (
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {short.map((p, si) => <ShortCard key={si} p={p} />)}
                   </div>
-                </div>
-
-                {/* Info */}
-                <div className={`flex flex-col justify-center p-8 flex-1 ${isEven ? 'md:order-2' : 'md:order-1'}`}>
-                  {/* Top bar */}
-                  <div className="flex items-center gap-3 mb-4 flex-wrap">
-                    <span className="text-xs font-semibold bg-brand-blue/10 text-brand-blue px-3 py-1 rounded-full">
-                      {p.category}
-                    </span>
-                    <span className="text-xs text-gray-400">{p.date}</span>
-                  </div>
-
-                  <p className="text-xs font-bold text-brand-orange uppercase tracking-widest mb-2">
-                    {p.client}
-                  </p>
-
-                  <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 leading-snug">
-                    {p.title}
-                  </h3>
-
-                  <p className="text-gray-500 text-sm leading-relaxed mb-6">
-                    {p.desc}
-                  </p>
-
-                  {/* Meta */}
-                  <div className="flex flex-wrap gap-5 text-sm text-gray-400 mb-6">
-                    <span className="flex items-center gap-1.5">
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      {p.location}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      {p.guests}
-                    </span>
-                  </div>
-
-                  <div>
-                    <Link
-                      href={`/chuong-trinh-da-lam/${p.slug}`}
-                      className="inline-flex items-center gap-2 bg-brand-blue hover:bg-brand-blue-dark text-white text-sm font-semibold px-6 py-3 rounded-lg transition-colors"
-                    >
-                      Xem chi tiết
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
+                )}
               </div>
             );
           })}
