@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation';
 
 const navLinks = [
   { href: '/', label: 'Trang chủ' },
-  { href: '/gioi-thieu', label: 'Giới thiệu' },
   { href: '/chuong-trinh-da-lam', label: 'Chương trình đã làm', highlight: true },
+  { href: '/gioi-thieu', label: 'Giới thiệu' },
   { href: '/dich-vu', label: 'Dịch vụ' },
   { href: '/khach-hang', label: 'Khách hàng' },
   { href: '/lien-he', label: 'Liên hệ' },
