@@ -72,27 +72,31 @@ const ArticleBadge = () => (
   </span>
 );
 
-function TallCard({ p, isEven }: { p: Card; isEven: boolean }) {
+function TallCard({ p, isEven, isDark }: { p: Card; isEven: boolean; isDark: boolean }) {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col md:flex-row">
+    <div className={`rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col md:flex-row ${isDark ? 'bg-[#0a1f3d]' : 'bg-white border border-gray-100'}`}>
       <div className={`relative w-full md:w-2/5 shrink-0 ${isEven ? 'md:order-1' : 'md:order-2'}`}>
         <div className="h-56 md:h-full min-h-55 relative">
           <Image src={p.image} alt={p.title} fill className="object-cover" />
-          <div className={`absolute inset-0 ${isEven ? 'bg-linear-to-r from-transparent to-white/20' : 'bg-linear-to-l from-transparent to-white/20'}`} />
+          <div className={`absolute inset-0 ${isEven
+            ? `bg-linear-to-r from-transparent ${isDark ? 'to-brand-blue/30' : 'to-white/20'}`
+            : `bg-linear-to-l from-transparent ${isDark ? 'to-brand-blue/30' : 'to-white/20'}`}`} />
         </div>
       </div>
       <div className={`flex flex-col justify-center p-8 flex-1 ${isEven ? 'md:order-2' : 'md:order-1'}`}>
         <div className="flex items-center gap-2 mb-4 flex-wrap">
           {p.isVenue ? <ArticleBadge /> : <OrganizerBadge />}
-          <span className="text-xs font-semibold bg-brand-blue/10 text-brand-blue px-3 py-1 rounded-full">{p.category}</span>
-          {!p.isVenue && <span className="text-xs text-gray-400">{p.date}</span>}
+          <span className={`text-xs font-semibold px-3 py-1 rounded-full ${isDark ? 'bg-white/15 text-white' : 'bg-brand-blue/10 text-brand-blue'}`}>{p.category}</span>
+          {!p.isVenue && <span className={`text-xs ${isDark ? 'text-white/70' : 'text-gray-400'}`}>{p.date}</span>}
         </div>
         <p className="text-xs font-bold text-brand-orange uppercase tracking-widest mb-2">{p.label}</p>
-        <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 leading-snug">{p.title}</h3>
-        <p className="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-3">
-          <span className="font-bold text-brand-blue">Global</span> <span className="font-bold text-brand-orange">Connecting</span> vinh dự được <span className="font-semibold">{p.label}</span> tin tưởng giao phó tổ chức — {p.desc}
+        <h3 className={`text-xl md:text-2xl font-bold mb-3 leading-snug ${isDark ? 'text-white' : 'text-gray-900'}`}>{p.title}</h3>
+        <p className={`text-sm leading-relaxed mb-6 line-clamp-3 ${isDark ? 'text-white/90' : 'text-gray-700'}`}>
+          <span className="font-bold text-brand-blue" style={isDark ? { color: '#93c5fd' } : {}}>Global</span>{' '}
+          <span className="font-bold text-brand-orange">Connecting</span>{' '}
+          vinh dự được <span className="font-semibold">{p.label}</span> tin tưởng giao phó tổ chức — {p.desc}
         </p>
-        <div className="flex flex-wrap gap-5 text-sm text-gray-400 mb-6">
+        <div className={`flex flex-wrap gap-5 text-sm mb-6 ${isDark ? 'text-white/70' : 'text-gray-400'}`}>
           {p.meta.map((m, i) => (
             <span key={i} className="flex items-center gap-1.5">
               {m.icon === 'location' ? <LocationIcon /> : <PeopleIcon />}
@@ -101,7 +105,7 @@ function TallCard({ p, isEven }: { p: Card; isEven: boolean }) {
           ))}
         </div>
         <div>
-          <Link href={`/chuong-trinh-da-lam/${p.slug}`} className="inline-flex items-center gap-2 bg-brand-blue hover:bg-brand-blue-dark text-white text-sm font-semibold px-6 py-3 rounded-lg transition-colors">
+          <Link href={`/chuong-trinh-da-lam/${p.slug}`} className={`inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-lg transition-colors ${isDark ? 'bg-brand-orange hover:bg-brand-orange-dark text-white' : 'bg-brand-blue hover:bg-brand-blue-dark text-white'}`}>
             {p.isVenue ? 'Đọc bài viết' : 'Xem chi tiết'}
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </Link>
@@ -163,9 +167,10 @@ export default function Programs() {
             const short = displayVenues.slice(gi * 2, gi * 2 + 2);
             return (
               <div key={gi} className="space-y-8">
-                {tall.map((p, ti) => (
-                  <TallCard key={ti} p={p} isEven={(gi * 2 + ti) % 2 === 0} />
-                ))}
+                {tall.map((p, ti) => {
+                  const idx = gi * 2 + ti;
+                  return <TallCard key={ti} p={p} isEven={idx % 2 === 0} isDark={idx % 2 === 1} />;
+                })}
                 {short.length > 0 && (
                   <div className="grid md:grid-cols-2 gap-6">
                     {short.map((p, si) => <ShortCard key={si} p={p} />)}
