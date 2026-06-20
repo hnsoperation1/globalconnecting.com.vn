@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import events from '@/data/events';
 import { venues } from '@/data/venues';
 
 type Card = {
@@ -14,18 +15,18 @@ type Card = {
   isVenue: boolean;
 };
 
-const eventPrograms: Card[] = Array.from({ length: 10 }, (_, i) => ({
-  slug: 'light-up-the-future',
-  category: 'CSR & Sự kiện cộng đồng',
-  label: 'Panasonic Việt Nam',
-  title: 'Light Up The Future',
-  date: '11–12/03/2026',
+const eventPrograms: Card[] = events.map((e) => ({
+  slug: e.slug,
+  category: e.category,
+  label: e.client,
+  title: e.title,
+  date: e.date,
   meta: [
-    { icon: 'location', text: 'Quảng Trị' },
-    { icon: 'people', text: '510 hộ gia đình' },
+    { icon: 'location' as const, text: e.location },
+    ...(e.stats[1] ? [{ icon: 'people' as const, text: `${e.stats[1].number} ${e.stats[1].label}` }] : []),
   ],
-  desc: 'Trao tặng 510 đèn năng lượng mặt trời cho hai xã biên giới Tà Rụt và Hướng Lập, kết hợp lớp học STEM và các hoạt động cộng đồng ý nghĩa.',
-  image: '/events/light-up-the-future/1.jpg',
+  desc: e.intro.slice(0, 120) + '…',
+  image: e.coverImage,
   isVenue: false,
 }));
 
