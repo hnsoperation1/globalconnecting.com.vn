@@ -42,8 +42,17 @@ const venueCards: Card[] = venues.map((v) => ({
   isVenue: true,
 }));
 
+const getEventOrder = (img: string) => {
+  const m = img.match(/\/events\/(\d+)-/);
+  if (!m) return 999;
+  const n = parseInt(m[1]);
+  return n === 0 ? 999 : n;
+};
+
 const MAX = 50;
-const displayEvents = eventPrograms.slice(0, MAX);
+const displayEvents = [...eventPrograms]
+  .sort((a, b) => getEventOrder(a.image) - getEventOrder(b.image))
+  .slice(0, MAX);
 const displayVenues = venueCards.slice(0, MAX);
 const groupCount = Math.max(Math.ceil(displayEvents.length / 2), Math.ceil(displayVenues.length / 2));
 

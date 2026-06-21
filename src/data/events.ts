@@ -28,7 +28,7 @@ const events: Event[] = [
     subtitle: 'Kết nối – Tin tưởng – Cùng phát triển tại 3 thành phố lớn',
     date: '03/06/2026',
     location: 'Hà Nội · Đà Nẵng · TP. Hồ Chí Minh',
-    coverImage: '/events/panasonic-hoi-nghi-khach-hang-03062026/cover01.jpg',
+    coverImage: '/events/10-panasonic-hoi-nghi-khach-hang-03062026/cover01.jpg',
     newsLink: 'https://www.panasonic.com/vn/corporate/news/articles/20260603-panasonic-to-hold-customer-conference-2026-in-hanoi-da-nang-and-ho-chi-minh-city.html',
     intro:
       'Panasonic Việt Nam tổ chức Hội nghị Khách hàng 2026 tại ba thành phố lớn — Hà Nội, Đà Nẵng và TP. Hồ Chí Minh — nhằm gặp gỡ, tri ân và chia sẻ định hướng chiến lược cùng các đối tác, nhà phân phối và khách hàng trọng điểm trên toàn quốc. Đây là sự kiện thường niên quan trọng nhất trong lịch hoạt động của Panasonic Việt Nam, khẳng định cam kết đồng hành lâu dài cùng cộng đồng đối tác.',
@@ -63,7 +63,7 @@ const events: Event[] = [
       },
     ],
     images: [
-      { src: '/events/panasonic-hoi-nghi-khach-hang-03062026/cover01.jpg', caption: 'Toàn cảnh Hội nghị Khách hàng Panasonic 2026' },
+      { src: '/events/10-panasonic-hoi-nghi-khach-hang-03062026/cover01.jpg', caption: 'Toàn cảnh Hội nghị Khách hàng Panasonic 2026' },
     ],
   },
   {
@@ -74,7 +74,7 @@ const events: Event[] = [
     subtitle: 'Hành trình mang ánh sáng tới vùng đất biên giới Quảng Trị',
     date: '11–12/03/2026',
     location: 'Tà Rụt & Hướng Lập, Quảng Trị',
-    coverImage: '/events/panasonic-light-up-the-future-11032026/1.jpg',
+    coverImage: '/events/2-panasonic-light-up-the-future-11032026/1.jpg',
     newsLink: 'https://www.panasonic.com/vn/corporate/news/articles/20260312-solar-lantern-donation-program-in-quang-tri.html',
     intro:
       'Panasonic Việt Nam và 20 bạn trẻ tình nguyện viên Gen G đã trao tặng 510 đèn năng lượng mặt trời cho 510 hộ gia đình tại hai xã biên giới Tà Rụt và Hướng Lập, tỉnh Quảng Trị. Đây là địa bàn miền núi, địa hình chia cắt và thường xuyên chịu ảnh hưởng của mưa lũ, khiến nhiều hộ đồng bào dân tộc thiểu số gặp khó khăn trong việc tiếp cận điện lưới quốc gia. Mỗi chiếc đèn được trao đi không chỉ là ánh sáng, mà còn là hy vọng cho một ngày mai tốt đẹp hơn.',
@@ -109,13 +109,13 @@ const events: Event[] = [
       },
     ],
     images: [
-      { src: '/events/panasonic-light-up-the-future-11032026/Picture1.jpg', caption: 'Tổng Giám đốc Panasonic Việt Nam trao tặng tượng trưng 510 đèn cho Phó Chủ tịch UBND tỉnh Quảng Trị' },
-      { src: '/events/panasonic-light-up-the-future-11032026/Picture2.jpg', caption: 'Panasonic trực tiếp trao đèn cho 100 hộ dân tại thôn Húc Nghì, xã Tà Rụt' },
-      { src: '/events/panasonic-light-up-the-future-11032026/Picture3.jpg', caption: 'Ánh sáng từ đèn năng lượng mặt trời giúp trẻ em học tập tốt hơn vào ban đêm' },
-      { src: '/events/panasonic-light-up-the-future-11032026/Picture4.jpg', caption: 'Tình nguyện viên Gen G trực tiếp hướng dẫn sử dụng đèn cho bà con' },
-      { src: '/events/panasonic-light-up-the-future-11032026/Picture5.jpg', caption: 'Các cán bộ Tập đoàn Panasonic Holdings trực tiếp trao tặng đèn cho người dân' },
-      { src: '/events/panasonic-light-up-the-future-11032026/Picture6.jpg', caption: 'Các tình nguyện viên Gen G mang đến lớp học trải nghiệm STEM cho học sinh địa phương' },
-      { src: '/events/panasonic-light-up-the-future-11032026/Picture7.jpg', caption: 'Hành trình "đóng góp cho xã hội" đáng nhớ của các bạn trẻ Gen G cùng Panasonic' },
+      { src: '/events/2-panasonic-light-up-the-future-11032026/Picture1.jpg', caption: 'Tổng Giám đốc Panasonic Việt Nam trao tặng tượng trưng 510 đèn cho Phó Chủ tịch UBND tỉnh Quảng Trị' },
+      { src: '/events/2-panasonic-light-up-the-future-11032026/Picture2.jpg', caption: 'Panasonic trực tiếp trao đèn cho 100 hộ dân tại thôn Húc Nghì, xã Tà Rụt' },
+      { src: '/events/2-panasonic-light-up-the-future-11032026/Picture3.jpg', caption: 'Ánh sáng từ đèn năng lượng mặt trời giúp trẻ em học tập tốt hơn vào ban đêm' },
+      { src: '/events/2-panasonic-light-up-the-future-11032026/Picture4.jpg', caption: 'Tình nguyện viên Gen G trực tiếp hướng dẫn sử dụng đèn cho bà con' },
+      { src: '/events/2-panasonic-light-up-the-future-11032026/Picture5.jpg', caption: 'Các cán bộ Tập đoàn Panasonic Holdings trực tiếp trao tặng đèn cho người dân' },
+      { src: '/events/2-panasonic-light-up-the-future-11032026/Picture6.jpg', caption: 'Các tình nguyện viên Gen G mang đến lớp học trải nghiệm STEM cho học sinh địa phương' },
+      { src: '/events/2-panasonic-light-up-the-future-11032026/Picture7.jpg', caption: 'Hành trình "đóng góp cho xã hội" đáng nhớ của các bạn trẻ Gen G cùng Panasonic' },
     ],
   },
   {
@@ -126,7 +126,7 @@ const events: Event[] = [
     subtitle: 'Đêm tiệc tri ân — Gắn kết đội ngũ miền Bắc trên đất Quy Nhơn',
     date: '09/06/2026',
     location: 'Nhà hàng Ẩm thực Việt Restaurant, Quy Nhơn',
-    coverImage: '/events/tan-phuong-dong-gala-dinner-09062026/cover01.jpg',
+    coverImage: '/events/3-tan-phuong-dong-gala-dinner-09062026/cover01.jpg',
     intro:
       'Trong không khí ấm áp và tràn đầy cảm xúc tại Nhà hàng Ẩm thực Việt Restaurant — Quy Nhơn, Công ty Tân Phương Đông tổ chức đêm Gala Dinner đặc biệt dành riêng cho toàn thể cán bộ nhân viên khu vực miền Bắc. Đây là dịp để ban lãnh đạo bày tỏ sự tri ân, ghi nhận những đóng góp xuất sắc của từng thành viên trong suốt hành trình đồng hành cùng công ty, đồng thời tạo không gian gắn kết và chia sẻ trước những chặng đường mới phía trước.',
     stats: [
@@ -151,14 +151,14 @@ const events: Event[] = [
       },
     ],
     images: [
-      { src: '/events/tan-phuong-dong-gala-dinner-09062026/cover01.jpg', caption: 'Toàn cảnh đêm Gala Dinner Tân Phương Đông 2026 tại Quy Nhơn' },
-      { src: '/events/tan-phuong-dong-gala-dinner-09062026/00.jpg', caption: 'Không gian đêm tiệc tại Nhà hàng Ẩm thực Việt Restaurant' },
-      { src: '/events/tan-phuong-dong-gala-dinner-09062026/02.jpg', caption: 'Ban lãnh đạo và toàn thể cán bộ nhân viên miền Bắc' },
-      { src: '/events/tan-phuong-dong-gala-dinner-09062026/04.jpg', caption: 'Lễ vinh danh và trao thưởng cá nhân xuất sắc' },
-      { src: '/events/tan-phuong-dong-gala-dinner-09062026/05.jpg', caption: 'Chương trình văn nghệ do anh chị em nhân viên biểu diễn' },
-      { src: '/events/tan-phuong-dong-gala-dinner-09062026/06.jpg', caption: 'Khoảnh khắc giao lưu và kết nối trong đêm tiệc' },
-      { src: '/events/tan-phuong-dong-gala-dinner-09062026/09.jpg', caption: 'Tiệc dinner với ẩm thực đặc trưng Quy Nhơn' },
-      { src: '/events/tan-phuong-dong-gala-dinner-09062026/10.jpg', caption: 'Kỷ niệm chương và quà tặng tri ân đội ngũ' },
+      { src: '/events/3-tan-phuong-dong-gala-dinner-09062026/cover01.jpg', caption: 'Toàn cảnh đêm Gala Dinner Tân Phương Đông 2026 tại Quy Nhơn' },
+      { src: '/events/3-tan-phuong-dong-gala-dinner-09062026/00.jpg', caption: 'Không gian đêm tiệc tại Nhà hàng Ẩm thực Việt Restaurant' },
+      { src: '/events/3-tan-phuong-dong-gala-dinner-09062026/02.jpg', caption: 'Ban lãnh đạo và toàn thể cán bộ nhân viên miền Bắc' },
+      { src: '/events/3-tan-phuong-dong-gala-dinner-09062026/04.jpg', caption: 'Lễ vinh danh và trao thưởng cá nhân xuất sắc' },
+      { src: '/events/3-tan-phuong-dong-gala-dinner-09062026/05.jpg', caption: 'Chương trình văn nghệ do anh chị em nhân viên biểu diễn' },
+      { src: '/events/3-tan-phuong-dong-gala-dinner-09062026/06.jpg', caption: 'Khoảnh khắc giao lưu và kết nối trong đêm tiệc' },
+      { src: '/events/3-tan-phuong-dong-gala-dinner-09062026/09.jpg', caption: 'Tiệc dinner với ẩm thực đặc trưng Quy Nhơn' },
+      { src: '/events/3-tan-phuong-dong-gala-dinner-09062026/10.jpg', caption: 'Kỷ niệm chương và quà tặng tri ân đội ngũ' },
     ],
   },
   {
