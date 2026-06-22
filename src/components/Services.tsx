@@ -134,17 +134,20 @@ export default function Services() {
             }}
           >
             <div className="relative z-10 text-center px-10">
-              <div className="inline-block bg-black/60 rounded-lg px-5 py-3 mb-5">
-                <p className="text-white font-semibold text-lg leading-snug">Cần đặt vé cho đoàn của bạn?</p>
-                <p className="text-white/80 text-sm mt-1">Liên hệ để được tư vấn và hỗ trợ đặt vé nhanh chóng.</p>
+              <div className="bg-black/60 rounded-xl px-6 py-5 mb-5 max-w-xs mx-auto">
+                <p className="text-brand-orange font-bold text-xs uppercase tracking-widest mb-2">Nền tảng đặt vé</p>
+                <p className="text-white font-bold text-lg leading-snug mb-2">ticket.globalconnecting.com.vn</p>
+                <p className="text-white/75 text-sm leading-relaxed">Đặt vé máy bay nội địa & quốc tế nhanh chóng — giá tốt, thanh toán tiện lợi, hỗ trợ đặt đoàn số lượng lớn.</p>
               </div>
-              <br />
-              <Link
-                href="/lien-he"
-                className="inline-block bg-brand-orange hover:bg-brand-orange-dark text-white font-semibold px-7 py-3 rounded-lg transition-colors"
+              <a
+                href="https://ticket.globalconnecting.com.vn"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white font-semibold px-7 py-3 rounded-lg transition-colors"
               >
-                Liên hệ đặt vé ngay
-              </Link>
+                Đặt vé ngay
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+              </a>
             </div>
           </div>
 
