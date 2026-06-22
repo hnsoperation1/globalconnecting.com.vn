@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import events, { getEventBySlug } from '@/data/events';
 import { venues, getVenueBySlug } from '@/data/venues';
+import QuotesCarousel from '@/components/QuotesCarousel';
 
 export function generateStaticParams() {
   return [
@@ -258,25 +259,14 @@ export default async function EventDetailPage(
       </section>
 
       {/* ── QUOTES ── */}
-      <section className="py-14 bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-brand-blue mb-8">Chia sẻ từ các bên</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {event.quotes.map((q, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex flex-col">
-                <svg className="w-8 h-8 text-brand-orange/30 mb-3" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                </svg>
-                <p className="text-gray-600 text-sm leading-relaxed flex-1 mb-4">"{q.text}"</p>
-                <div className="border-t border-gray-100 pt-4">
-                  <div className="font-semibold text-gray-900 text-sm">{q.author}</div>
-                  <div className="text-brand-blue text-xs mt-0.5">{q.role}</div>
-                </div>
-              </div>
-            ))}
+      {event.quotes.length > 0 && (
+        <section className="py-14 bg-gray-50">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-2xl font-bold text-brand-blue mb-8">Chia sẻ</h2>
+            <QuotesCarousel quotes={event.quotes} />
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── BOTTOM CTA ── */}
       <section

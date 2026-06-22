@@ -61,6 +61,16 @@ const events: Event[] = [
         author: 'Ban Tổ chức',
         role: 'Panasonic Việt Nam',
       },
+      {
+        text: 'Logistics 3 thành phố trong cùng một chuỗi sự kiện là bài toán không đơn giản. Global Connecting xử lý trơn tru từ đầu đến cuối — chúng tôi thực sự tin tưởng khi giao phó.',
+        author: 'Trưởng phòng Marketing',
+        role: 'Panasonic Việt Nam',
+      },
+      {
+        text: 'Không gian hội nghị được dàn dựng nhất quán và chuyên nghiệp ở cả Hà Nội, Đà Nẵng lẫn TP.HCM. Đó là minh chứng rõ nhất cho năng lực tổ chức đa điểm của Global Connecting.',
+        author: 'Đại diện Nhà phân phối',
+        role: 'Đối tác chiến lược khu vực miền Trung',
+      },
     ],
     images: [
       { src: '/events/10-panasonic-hoi-nghi-khach-hang-03062026/cover01.jpg', caption: 'Toàn cảnh Hội nghị Khách hàng Panasonic 2026' },
@@ -106,6 +116,16 @@ const events: Event[] = [
         text: 'Chuyến đi vô cùng ý nghĩa, em không chỉ được gặp gỡ, kết nối với các bạn thanh niên mà còn có cơ hội trực tiếp góp phần hỗ trợ người dân và các bạn học sinh tại địa phương.',
         author: 'Nguyễn Phương Uyên',
         role: 'Sinh viên ĐH Ngoại thương – Tình nguyện viên Gen G',
+      },
+      {
+        text: 'Chương trình được tổ chức rất chu đáo từ di chuyển đến thực địa. Global Connecting giúp chúng tôi tập trung hoàn toàn vào sứ mệnh thiện nguyện mà không phải lo lắng bất kỳ chi tiết hậu cần nào.',
+        author: 'Đại diện Tình nguyện viên Gen G',
+        role: 'Panasonic Việt Nam',
+      },
+      {
+        text: 'Khi Panasonic thực hiện chương trình mang tầm ý nghĩa như thế này, chúng tôi cần đối tác thực sự tin cậy. Global Connecting đã không phụ lòng tin đó.',
+        author: 'Trưởng dự án CSR',
+        role: 'Panasonic Việt Nam',
       },
     ],
     images: [
@@ -159,6 +179,16 @@ const events: Event[] = [
         author: 'Đại diện Nhân viên',
         role: 'Công ty Tân Phương Đông',
       },
+      {
+        text: 'Từ ánh đèn sân khấu, bài trí bàn tiệc đến từng tiết mục văn nghệ — Global Connecting thực sự hiểu chúng tôi muốn gì và biến nó thành hiện thực một cách trọn vẹn.',
+        author: 'Trưởng phòng Nhân sự',
+        role: 'Công ty Tân Phương Đông',
+      },
+      {
+        text: 'Lần đầu hợp tác với Global Connecting nhưng cảm giác như đã quen lâu năm. Đội ngũ rất chủ động, phối hợp mượt mà và luôn sẵn sàng giải quyết mọi vấn đề phát sinh.',
+        author: 'Đại diện Công đoàn',
+        role: 'Công ty Tân Phương Đông',
+      },
     ],
     images: [
       { src: '/events/3-tan-phuong-dong-gala-dinner-09062026/cover01.jpg', caption: 'Toàn cảnh đêm Gala Dinner Tân Phương Đông 2026 tại Quy Nhơn' },
@@ -201,6 +231,26 @@ const events: Event[] = [
         author: 'Đại diện Honda Việt Nam',
         role: 'Bộ phận Pháp lý & Sở hữu Trí tuệ',
       },
+      {
+        text: 'Chương trình được chuẩn bị rất kỹ lưỡng, từ tài liệu hỗ trợ đến điều phối thực địa. Điều đó giúp buổi tập huấn diễn ra đúng tiến độ và đạt hiệu quả tuyên truyền cao nhất.',
+        author: 'Đại diện Chi cục Quản lý thị trường',
+        role: 'Tỉnh Phú Thọ',
+      },
+      {
+        text: 'Khi tổ chức sự kiện mang tính pháp lý như thế này, chúng tôi cần đơn vị thực sự hiểu yêu cầu đặc thù. Global Connecting đã đáp ứng hoàn toàn — từ không gian đến vận hành đều chuẩn mực.',
+        author: 'Trưởng phòng Pháp lý',
+        role: 'Honda Việt Nam',
+      },
+      {
+        text: 'Sự kiện diễn ra suôn sẻ ngay từ phút đầu tiên đến khi kết thúc. Đó không phải ngẫu nhiên — đó là kết quả của sự chuẩn bị bài bản và đội ngũ vận hành tận tâm từ phía Global Connecting.',
+        author: 'Trưởng dự án truyền thông',
+        role: 'Honda Việt Nam',
+      },
+      {
+        text: 'Niềm tin giữa hai bên được xây dựng qua từng hành động cụ thể. Chúng tôi rất hài lòng về cách Global Connecting đồng hành cùng Honda trong chương trình quan trọng này.',
+        author: 'Giám đốc vùng',
+        role: 'Honda Việt Nam',
+      },
     ],
     images: [
       { src: '/events/1-honda-hoi-nghi-ve-quyen-so-huu-tri-tue-12062026/cover.jpg', caption: 'Toàn cảnh chương trình tập huấn bảo hộ SHTT Honda Việt Nam tại Phú Thọ' },
@@ -242,6 +292,21 @@ const events: Event[] = [
       {
         text: 'Mỗi chuyến tham quan du lịch tuy khép lại, nhưng niềm vui và lòng tự hào về VAP thân yêu luôn toả sáng trên nụ cười, ánh mắt của mỗi nhân viên. Đó chính là thành quả của sự phối hợp tuyệt vời với đội ngũ Global Connecting.',
         author: 'Đại diện Nhân viên',
+        role: 'Công ty VAP',
+      },
+      {
+        text: 'Ngày Hội Trải Nghiệm mang đến cho gần 300 con em nhân viên những kỷ niệm thật đặc biệt. Global Connecting đã tổ chức rất chu đáo để mỗi bạn nhỏ đều vui và an toàn suốt cả ngày.',
+        author: 'Đại diện Ban Chấp hành Công đoàn',
+        role: 'Công ty VAP',
+      },
+      {
+        text: 'Ba sự kiện trong một năm, ba lần chúng tôi được chứng kiến sự chuyên nghiệp và tận tâm của Global Connecting. Đó là lý do VAP luôn chọn họ làm đối tác tổ chức sự kiện.',
+        author: 'Trưởng phòng Hành chính',
+        role: 'Công ty VAP',
+      },
+      {
+        text: 'Gần 1.300 người tham gia chuyến du lịch hè mà mọi thứ vẫn diễn ra trơn tru, không một sự cố nào. Đó không phải may mắn — đó là năng lực thực sự của Global Connecting.',
+        author: 'Đại diện Nhân viên miền Bắc',
         role: 'Công ty VAP',
       },
     ],
