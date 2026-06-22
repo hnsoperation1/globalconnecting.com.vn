@@ -45,7 +45,7 @@ export default function Services() {
           <div
             className="relative flex items-center justify-center min-h-80 lg:min-h-0"
             style={{
-              backgroundImage: 'url(/bg02.jpg)',
+              backgroundImage: 'url(/dich-vu/event.jpg)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
@@ -93,24 +93,122 @@ export default function Services() {
         </div>
       </section>
 
-      {/* ── Section 2: Tour & Vé máy bay ── */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-5">
-            {sideServices.map((s) => (
-              <div key={s.title}
-                className="bg-white rounded-xl p-6 border border-gray-100 hover:border-brand-blue/30 hover:shadow-md transition-all duration-200 flex gap-4 items-start"
-              >
-                <div className="w-11 h-11 bg-brand-blue/8 text-brand-blue rounded-lg flex items-center justify-center shrink-0">
-                  {s.icon}
+      {/* ── Section 2: Vé Máy Bay — blue card trái, ảnh phải ── */}
+      <section className="bg-gray-50 overflow-hidden">
+        <div className="lg:grid lg:grid-cols-2 min-h-120">
+
+          {/* Cột trái: white card */}
+          <div className="p-8 md:p-10 flex flex-col justify-center bg-white">
+            <p className="text-brand-orange font-semibold text-xs uppercase tracking-widest mb-3">
+              Dịch vụ của chúng tôi
+            </p>
+            <h3 className="text-3xl md:text-4xl font-bold text-brand-blue mb-2">Vé Máy Bay</h3>
+            <p className="text-gray-500 text-sm mb-2 leading-relaxed">
+              Đặt vé nội địa & quốc tế giá tốt cho đoàn doanh nghiệp.
+            </p>
+            <p className="text-gray-400 text-sm mb-6 leading-relaxed">
+              Global Connecting hỗ trợ đặt vé máy bay số lượng lớn cho đoàn — tối ưu lịch bay theo sự kiện, linh hoạt thay đổi và đồng hành xuyên suốt hành trình của doanh nghiệp bạn.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {[
+                'Vé nội địa & quốc tế tất cả các hãng',
+                'Đặt vé số lượng lớn cho đoàn',
+                'Hỗ trợ thay đổi, hoàn hủy linh hoạt',
+                'Tư vấn lịch bay khớp lịch trình sự kiện',
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3">
+                  <span className="w-2 h-2 bg-brand-orange rounded-full shrink-0" />
+                  <span className="text-gray-700 text-sm font-medium">{item}</span>
                 </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-1">{s.title}</h4>
-                  <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+
+          {/* Cột phải: background image + CTA */}
+          <div
+            className="relative flex items-center justify-center min-h-80 lg:min-h-0"
+            style={{
+              backgroundImage: 'url(/dich-vu/ve-may-bay.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            <div className="relative z-10 text-center px-10">
+              <div className="inline-block bg-black/60 rounded-lg px-5 py-3 mb-5">
+                <p className="text-white font-semibold text-lg leading-snug">Cần đặt vé cho đoàn của bạn?</p>
+                <p className="text-white/80 text-sm mt-1">Liên hệ để được tư vấn và hỗ trợ đặt vé nhanh chóng.</p>
+              </div>
+              <br />
+              <Link
+                href="/lien-he"
+                className="inline-block bg-brand-orange hover:bg-brand-orange-dark text-white font-semibold px-7 py-3 rounded-lg transition-colors"
+              >
+                Liên hệ đặt vé ngay
+              </Link>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── Section 3: Tour Du Lịch — ảnh trái, blue card phải ── */}
+      <section className="bg-gray-50 overflow-hidden">
+        <div className="lg:grid lg:grid-cols-2 min-h-120">
+
+          {/* Cột trái: background image + CTA */}
+          <div
+            className="relative flex items-center justify-center min-h-80 lg:min-h-0"
+            style={{
+              backgroundImage: 'url(/dich-vu/tour.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            <div className="relative z-10 text-center px-10">
+              <div className="inline-block bg-black/60 rounded-lg px-5 py-3 mb-5">
+                <p className="text-white font-semibold text-lg leading-snug">Đang lên kế hoạch chuyến đi?</p>
+                <p className="text-white/80 text-sm mt-1">Chúng tôi thiết kế tour riêng theo yêu cầu của đoàn.</p>
+              </div>
+              <br />
+              <Link
+                href="/lien-he"
+                className="inline-block bg-brand-orange hover:bg-brand-orange-dark text-white font-semibold px-7 py-3 rounded-lg transition-colors"
+              >
+                Tư vấn tour ngay
+              </Link>
+            </div>
+          </div>
+
+          {/* Cột phải: blue card */}
+          <div
+            className="p-8 md:p-10 flex flex-col justify-center"
+            style={{ background: 'linear-gradient(135deg, #1E5A8A 0%, #2A75B2 100%)' }}
+          >
+            <p className="text-brand-orange font-semibold text-xs uppercase tracking-widest mb-3">
+              Dịch vụ của chúng tôi
+            </p>
+            <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">Tour Du Lịch</h3>
+            <p className="text-white/70 text-sm mb-2 leading-relaxed">
+              Tour trong nước & quốc tế thiết kế riêng theo yêu cầu.
+            </p>
+            <p className="text-white/60 text-sm mb-6 leading-relaxed">
+              Từ chuyến nghỉ dưỡng sau hội nghị, team building kết hợp du lịch đến incentive trip đẳng cấp — chúng tôi lên lịch trình riêng, không theo tour mẫu có sẵn.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {[
+                'Tour trong nước & quốc tế theo yêu cầu',
+                'Incentive trip trọn gói doanh nghiệp',
+                'Kết hợp linh hoạt với chương trình sự kiện',
+                'Lịch trình riêng, không tour có sẵn',
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3 bg-white/10 rounded-xl px-4 py-3">
+                  <span className="w-2 h-2 bg-brand-orange rounded-full shrink-0" />
+                  <span className="text-white text-sm font-medium">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
       </section>
     </>
