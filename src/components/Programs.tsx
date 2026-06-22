@@ -113,10 +113,14 @@ function TallCard({ p, isEven, isDark }: { p: Card; isEven: boolean; isDark: boo
         </div>
         <p className="text-xs font-bold text-brand-orange uppercase tracking-widest mb-2">{p.label}</p>
         <Link href={`/chuong-trinh-da-lam/${p.slug}`} className={`text-xl md:text-2xl font-bold mb-3 leading-snug hover:underline underline-offset-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{p.title}</Link>
-        <p className={`text-sm leading-relaxed mb-6 line-clamp-3 ${isDark ? 'text-white/90' : 'text-gray-600'}`}>
+        <p className={`text-sm leading-relaxed mb-4 line-clamp-3 ${isDark ? 'text-white/90' : 'text-gray-600'}`}>
           <span className="font-bold" style={{ color: isDark ? '#93c5fd' : '#1E5A8A' }}>Global</span>{' '}
           <span className="font-bold text-brand-orange">Connecting</span>{' '}
-          vinh dự được <span className="font-semibold">{p.label}</span> tin tưởng giao phó tổ chức — {p.desc}
+          vinh dự được <span className="font-semibold">{p.label}</span> tin tưởng giao phó tổ chức — {p.desc}{' '}
+          <Link href={`/chuong-trinh-da-lam/${p.slug}`} className={`inline-flex items-center gap-1 font-medium transition-colors ${isDark ? 'text-white/50 hover:text-white/90' : 'text-gray-400 hover:text-gray-700'}`}>
+            Xem thêm
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </Link>
         </p>
         <div className={`flex flex-wrap gap-5 text-sm mb-6 ${isDark ? 'text-white/70' : 'text-gray-400'}`}>
           {p.meta.map((m, i) => (
@@ -125,12 +129,6 @@ function TallCard({ p, isEven, isDark }: { p: Card; isEven: boolean; isDark: boo
               {m.text}
             </span>
           ))}
-        </div>
-        <div>
-          <Link href={`/chuong-trinh-da-lam/${p.slug}`} className={`inline-flex items-center gap-1.5 text-sm font-medium transition-colors ${isDark ? 'text-white/50 hover:text-white/90' : 'text-gray-400 hover:text-gray-700'}`}>
-            Xem thêm
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-          </Link>
         </div>
       </div>
     </div>
