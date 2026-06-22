@@ -11,7 +11,7 @@ export default function QuotesCarousel({ quotes }: { quotes: Quote[] }) {
   const prev = useCallback(() => setStart(s => (s - 1 + n) % n), [n]);
 
   useEffect(() => {
-    const id = setInterval(next, 4000);
+    const id = setInterval(next, 8000);
     return () => clearInterval(id);
   }, [next]);
 
