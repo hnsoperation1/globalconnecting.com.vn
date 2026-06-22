@@ -49,12 +49,21 @@ const getEventOrder = (img: string) => {
   return n === 0 ? 999 : n;
 };
 
-const MAX = 50;
-const displayEvents = [...eventPrograms]
-  .sort((a, b) => getEventOrder(a.image) - getEventOrder(b.image))
-  .slice(0, MAX);
-const displayVenues = venueCards.slice(0, MAX);
-const groupCount = Math.max(Math.ceil(displayEvents.length / 2), Math.ceil(displayVenues.length / 2));
+const realEvents = [...eventPrograms]
+  .filter((e) => !e.image.includes('mock'))
+  .sort((a, b) => getEventOrder(a.image) - getEventOrder(b.image));
+
+const realVenues = [...venueCards];
+
+const groupCount = 50;
+const CYCLE_TO = groupCount * 2;
+
+const displayEvents = realEvents.length > 0
+  ? Array.from({ length: CYCLE_TO }, (_, i) => realEvents[i % realEvents.length])
+  : [];
+const displayVenues = realVenues.length > 0
+  ? Array.from({ length: CYCLE_TO }, (_, i) => realVenues[i % realVenues.length])
+  : [];
 
 const LocationIcon = () => (
   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -103,7 +112,7 @@ function TallCard({ p, isEven, isDark }: { p: Card; isEven: boolean; isDark: boo
           {!p.isVenue && <span className={`text-xs ${isDark ? 'text-white/70' : 'text-gray-400'}`}>{p.date}</span>}
         </div>
         <p className="text-xs font-bold text-brand-orange uppercase tracking-widest mb-2">{p.label}</p>
-        <h3 className={`text-xl md:text-2xl font-bold mb-3 leading-snug ${isDark ? 'text-white' : 'text-gray-900'}`}>{p.title}</h3>
+        <Link href={`/chuong-trinh-da-lam/${p.slug}`} className={`text-xl md:text-2xl font-bold mb-3 leading-snug hover:underline underline-offset-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{p.title}</Link>
         <p className={`text-sm leading-relaxed mb-6 line-clamp-3 ${isDark ? 'text-white/90' : 'text-gray-600'}`}>
           <span className="font-bold" style={{ color: isDark ? '#93c5fd' : '#1E5A8A' }}>Global</span>{' '}
           <span className="font-bold text-brand-orange">Connecting</span>{' '}
@@ -118,9 +127,9 @@ function TallCard({ p, isEven, isDark }: { p: Card; isEven: boolean; isDark: boo
           ))}
         </div>
         <div>
-          <Link href={`/chuong-trinh-da-lam/${p.slug}`} className={`inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-lg transition-colors ${isDark ? 'bg-brand-orange hover:bg-brand-orange-dark text-white' : 'bg-brand-blue hover:bg-brand-blue-dark text-white'}`}>
-            {p.isVenue ? 'Đọc bài viết' : 'Xem chi tiết'}
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          <Link href={`/chuong-trinh-da-lam/${p.slug}`} className={`inline-flex items-center gap-1.5 text-sm font-medium transition-colors ${isDark ? 'text-white/50 hover:text-white/90' : 'text-gray-400 hover:text-gray-700'}`}>
+            Xem thêm
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </Link>
         </div>
       </div>
@@ -141,11 +150,11 @@ function ShortCard({ p }: { p: Card }) {
           {!p.isVenue && <span className="text-xs text-gray-400">{p.date}</span>}
         </div>
         <p className="text-xs font-bold text-brand-orange uppercase tracking-widest mb-1">{p.label}</p>
-        <h3 className="text-base font-bold text-gray-900 mb-2 leading-snug">{p.title}</h3>
+        <Link href={`/chuong-trinh-da-lam/${p.slug}`} className="text-base font-bold text-gray-900 mb-2 leading-snug hover:underline underline-offset-2">{p.title}</Link>
         <p className="text-gray-500 text-xs leading-relaxed mb-4 line-clamp-2">{p.desc}</p>
         <div className="mt-auto">
-          <Link href={`/chuong-trinh-da-lam/${p.slug}`} className="inline-flex items-center gap-1.5 text-brand-blue hover:text-brand-blue-dark text-sm font-semibold transition-colors">
-            {p.isVenue ? 'Đọc bài viết' : 'Xem chi tiết'}
+          <Link href={`/chuong-trinh-da-lam/${p.slug}`} className="inline-flex items-center gap-1.5 text-gray-400 hover:text-gray-600 text-sm font-medium transition-colors">
+            Xem thêm
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </Link>
         </div>
