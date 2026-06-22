@@ -149,6 +149,16 @@ const events: Event[] = [
         author: 'Ban Lãnh đạo',
         role: 'Công ty Tân Phương Đông',
       },
+      {
+        text: 'Global Connecting đã đồng hành cùng chúng tôi từ khâu lên ý tưởng đến khi đêm tiệc khép lại. Mọi chi tiết đều được chuẩn bị chu đáo, tỉ mỉ — chúng tôi thực sự an tâm khi giao phó cho một đội ngũ chuyên nghiệp và tận tâm như vậy.',
+        author: 'Đại diện Ban Tổ chức',
+        role: 'Công ty Tân Phương Đông',
+      },
+      {
+        text: 'Không gian, chương trình, âm thanh ánh sáng — tất cả đều vượt kỳ vọng. Cảm ơn Global Connecting đã biến đêm Gala Dinner thành một kỷ niệm thực sự đáng nhớ cho toàn thể anh chị em.',
+        author: 'Đại diện Nhân viên',
+        role: 'Công ty Tân Phương Đông',
+      },
     ],
     images: [
       { src: '/events/3-tan-phuong-dong-gala-dinner-09062026/cover01.jpg', caption: 'Toàn cảnh đêm Gala Dinner Tân Phương Đông 2026 tại Quy Nhơn' },
