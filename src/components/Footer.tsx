@@ -13,7 +13,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#071428] text-white">
+    <footer className="bg-[#071428] text-white" style={{ backgroundImage: 'url(/bg-footer.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid md:grid-cols-3 gap-10 mb-10">
           {/* Brand */}
