@@ -7,8 +7,9 @@ import { usePathname } from 'next/navigation';
 const navLinks = [
   { href: '/', label: 'Trang chủ' },
   { href: '/chuong-trinh-da-lam', label: 'Chương trình đã làm', highlight: true },
+  { href: 'https://ticket.globalconnecting.com.vn', label: 'Vé máy bay', external: true },
   { href: '/gioi-thieu', label: 'Giới thiệu' },
-  { href: '/dich-vu', label: 'Dịch vụ' },
+  { href: '/dich-vu', label: 'Tổ chức sự kiện' },
   { href: '/khach-hang', label: 'Khách hàng' },
   { href: '/lien-he', label: 'Liên hệ' },
 ];
@@ -114,6 +115,16 @@ export default function Navbar() {
                   )}
                   {link.label}
                 </Link>
+              ) : link.external ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium text-brand-orange hover:text-brand-orange-dark transition-colors"
+                >
+                  {link.label}
+                </a>
               ) : (
                 <Link
                   key={link.href}
@@ -147,16 +158,29 @@ export default function Navbar() {
         {/* Mobile menu */}
         {menuOpen && (
           <div className="md:hidden bg-white border-t border-gray-100 py-4 shadow-lg">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block px-4 py-2.5 text-gray-700 hover:text-brand-orange hover:bg-gray-50 text-sm"
-                onClick={() => setMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) =>
+              link.external ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block px-4 py-2.5 text-brand-orange hover:bg-gray-50 text-sm font-medium"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="block px-4 py-2.5 text-gray-700 hover:text-brand-orange hover:bg-gray-50 text-sm"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
           </div>
         )}
       </div>
